@@ -1,0 +1,11 @@
+.product-details {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 2rem 0;
+}
+
+.product-details p {
+    padding: 0;
+    margin: 0;
+}
+

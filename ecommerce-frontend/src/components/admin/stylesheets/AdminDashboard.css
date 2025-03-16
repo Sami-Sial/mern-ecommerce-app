@@ -1,0 +1,21 @@
+p, h5 {
+    margin: 0;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 20px;
+    background-color: lightgrey;
+    border: 2px solid white;
+    padding: 20px 20px;
+    border-radius: 10px;
+}
+
+#inventory div {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}

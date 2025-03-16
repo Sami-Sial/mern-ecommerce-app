@@ -1,0 +1,15 @@
+p {
+    margin: 0;
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+

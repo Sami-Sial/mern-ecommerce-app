@@ -1,0 +1,16 @@
+.sidebar {
+    height: calc(100vh - 4rem);
+    border-right: 1px solid black;
+    width: 180px;
+    font-family: arial;
+    padding: 15px;
+    position: sticky;
+    top: 4rem;
+    left: 0;
+    flex-shrink: 0;
+}
+
+.checkbox {
+    display: flex;
+    gap: 10px;
+}
