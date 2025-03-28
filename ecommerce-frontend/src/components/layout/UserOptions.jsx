@@ -26,7 +26,7 @@ const UserOptions = ({ user }) => {
   return (
     <>
       <Dropdown>
-        <Dropdown.Toggle id="dropdown-basic" variant="secondary">
+        <Dropdown.Toggle id="dropdown-basic" variant="dark" size="sm">
           <img
             style={{ borderRadius: "5px", marginRight: "10px" }}
             width={30}

@@ -95,7 +95,7 @@ const ProductDetails = () => {
       <PageTitle title={"Product Details"} />
       <Header />
 
-      <main>
+      <main className="content-wrapper" style={{ width: "100vw" }}>
         {/* product details */}
         {loading ? (
           <Loader />
@@ -104,15 +104,15 @@ const ProductDetails = () => {
             {product && (
               <>
                 <div className="product-details">
-                  <div>
+                  <div id="details-left">
                     <ProductCarousel product={product} />
                   </div>
 
-                  <div style={{ maxWidth: "60vw", minWidth: "40vw" }}>
+                  <div id="details-right">
                     <h5>{product.name}</h5>
                     <span style={{ display: "flex", gap: "1rem" }}>
                       <p>Category : {product.category}</p>
-                      <p>Brand : {product.brand}Adidas</p>
+                      <p>Brand : {product.brand}Addidas</p>
                     </span>
                     <p style={{ color: "red" }}>
                       Price : &#x24;{product.price}

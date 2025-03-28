@@ -44,7 +44,7 @@ const Home = () => {
 
         {/* Featured products */}
         <div>
-          <h3 style={{ textAlign: "center", padding: "1rem" }}>
+          <h3 style={{ textAlign: "center", padding: "0.3rem 0 1rem" }}>
             Featured Products
           </h3>
 

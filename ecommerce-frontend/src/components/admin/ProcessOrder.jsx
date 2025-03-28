@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getOrderDetails } from "../../redux-toolkit/slices/order.slice.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import "./stylesheets/ProcessOrder.css";
 import {
   processOrder,
   clearAdminState,
@@ -140,8 +141,8 @@ const ProcessOrder = () => {
                 </div>
 
                 <div
+                  id="right"
                   style={{
-                    width: "30%",
                     display: "flex",
                     alignItems: "center",
                     flexDirection: "column",

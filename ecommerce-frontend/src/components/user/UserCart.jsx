@@ -7,6 +7,7 @@ import CartItemsTable from "./CartItemsTable";
 import { useSelector } from "react-redux";
 import DashboardTop from "../layout/DashboardTop";
 import PageTitle from "../layout/PageTitle";
+import "./stylesheets/UserCart.css";
 
 const UserCart = () => {
   const { user } = useSelector((state) => state.userSlice);
@@ -24,14 +25,9 @@ const UserCart = () => {
 
           {cartItems && cartItems.length ? (
             <div
-              className="content-wrapper"
+              id="user-cart"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                width: user ? "calc(100vw - 200px)" : "100vw",
-                paddingTop: "3rem",
-                maxHeight: "calc(100vh - 3rem)",
+                width: user ? "calc(100vw - 150px)" : "100vw",
               }}
             >
               <h4 style={{ textAlign: "center" }}>Cart Items</h4>

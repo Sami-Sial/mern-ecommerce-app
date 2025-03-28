@@ -30,7 +30,11 @@ const Header = () => {
         </div>
 
         <div id="navbar-middle">
-          <Link style={{ color: "white", textDecoration: "none" }} to={"/"}>
+          <Link
+            id="home-link"
+            style={{ color: "white", textDecoration: "none" }}
+            to={"/"}
+          >
             Home
           </Link>
           <Link
@@ -47,7 +51,7 @@ const Header = () => {
               textDecoration: "none",
             }}
           >
-            <Button variant="dark">
+            <Button variant="dark" size="sm">
               Search
               <i
                 style={{ marginLeft: "5px" }}
@@ -82,6 +86,7 @@ const Header = () => {
                 Login
               </Link>
               <Link
+                id="signup-btn"
                 to={"/signup"}
                 style={{ color: "white", textDecoration: "none" }}
               >

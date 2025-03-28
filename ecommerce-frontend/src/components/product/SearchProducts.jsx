@@ -14,11 +14,16 @@ const SearchProducts = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleInputChange = (e) => {
+    setSearch(e.target.value);
+    searcHandler();
+  };
+
   const searcHandler = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://mern-ecommerce-app-backend-one.vercel.app/api/v1/products/searched?search_query=${search}`
+        `https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/products/searched?search_query=${search}`
       );
 
       setProducts(data.products);
@@ -29,9 +34,9 @@ const SearchProducts = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    searcHandler();
-  }, [search]);
+  // useEffect(() => {
+  //   searcHandler();
+  // }, [search]);
 
   return (
     <>
@@ -58,7 +63,7 @@ const SearchProducts = () => {
               borderRadius: "10px",
             }}
             type="text"
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleInputChange(e)}
             value={search}
           />
         </div>

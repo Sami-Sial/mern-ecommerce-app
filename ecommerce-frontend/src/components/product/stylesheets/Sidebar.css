@@ -1,16 +1,28 @@
-.sidebar {
-    height: calc(100vh - 4rem);
-    border-right: 1px solid black;
-    width: 180px;
-    font-family: arial;
-    padding: 15px;
-    position: sticky;
-    top: 4rem;
-    left: 0;
-    flex-shrink: 0;
+.filter-sidebar {
+  height: calc(100vh - 4rem);
+  border-right: 1px solid black;
+  width: 180px;
+  font-family: arial;
+  padding: 15px;
+  position: sticky;
+  top: 4rem;
+  left: 0;
+  flex-shrink: 0;
 }
 
 .checkbox {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+@media screen and (max-width: 650px) {
+  .filter-sidebar {
+    border-right: none;
+    height: fit-content;
+    padding: 5px;
+    top: 3rem;
+  }
+  .filter-sidebar h5 {
+    display: none;
+  }
 }

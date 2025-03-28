@@ -1,0 +1,13 @@
+#right {
+  width: 30%;
+}
+
+@media screen and (max-width: 800px) {
+  .content-wrapper {
+    flex-direction: column;
+    padding: 10px;
+  }
+  #right {
+    width: 90%;
+  }
+}

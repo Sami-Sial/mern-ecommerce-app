@@ -52,7 +52,7 @@ const Sidebar = ({ currentPage }) => {
   }, [categoryFilters, brandFilters, price, ratings, currentPage]);
 
   return (
-    <div className="sidebar">
+    <div className="filter-sidebar">
       <h5 style={{ marginBottom: "1rem" }}>Filters</h5>
 
       <div style={{ marginBottom: "20px" }}>

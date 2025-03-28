@@ -4,10 +4,9 @@ const Loader = () => {
     <>
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+          top: "50vh",
+          left: "48vw",
+          position: "absolute",
         }}
       >
         <CircularProgress color="secondary" />

@@ -82,9 +82,7 @@ const AdminDashboard = () => {
           <Sidebar />
 
           <div className="content-wrapper">
-            <div
-              style={{ display: "flex", justifyContent: "center", gap: "2rem" }}
-            >
+            <div id="top">
               <div className="box">
                 <h5>Total Revenue</h5>
                 <h5>&#x24;{Math.round(totalAmount)}</h5>
@@ -104,19 +102,16 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            <div
-              style={{ display: "flex", gap: "2rem", justifyContent: "center" }}
-            >
+            <div id="chart-wrapper">
               <div
+                className="chart"
                 style={{
-                  width: "240px",
-                  height: "250px",
                   margin: "2rem 0",
-                  backgroundColor: "lightgray",
                   borderRadius: "10px",
                 }}
               >
                 <Doughnut
+                  className="doughnut-chart"
                   data={{
                     labels: ["Out of Stock", "In Stock"],
                     datasets: [
@@ -135,15 +130,14 @@ const AdminDashboard = () => {
               </div>
 
               <div
+                className="chart"
                 style={{
-                  width: "250px",
-                  height: "250px",
                   margin: "2rem 0",
-                  backgroundColor: "lightgray",
                   borderRadius: "10px",
                 }}
               >
                 <Doughnut
+                  className="doughnut-chart"
                   data={{
                     labels: ["Processing Orders", "Delivered Orders"],
                     datasets: [
@@ -164,7 +158,6 @@ const AdminDashboard = () => {
               <div
                 style={{
                   margin: "2rem 0",
-                  backgroundColor: "lightgrey",
                   padding: "10px 20px",
                 }}
                 id="inventory"

@@ -14,25 +14,26 @@ function HomeCarousel() {
 
   return (
     <Carousel
+      id="home-carousel"
       style={{ backgroundColor: "black" }}
       activeIndex={index}
       onSelect={handleSelect}
       variant="dark"
     >
       <Carousel.Item>
-        <img style={{ width: "100vw", height: "60vh" }} src={img1} alt="" />
+        <img src={img1} alt="" />
       </Carousel.Item>
 
       <Carousel.Item>
-        <img style={{ width: "100vw", height: "60vh" }} src={img2} alt="" />
+        <img src={img2} alt="" />
       </Carousel.Item>
 
       <Carousel.Item>
-        <img style={{ width: "100vw", height: "60vh" }} src={img3} alt="" />
+        <img src={img3} alt="" />
       </Carousel.Item>
 
       <Carousel.Item>
-        <img style={{ width: "100vw", height: "60vh" }} src={img4} alt="" />
+        <img src={img4} alt="" />
       </Carousel.Item>
     </Carousel>
   );

@@ -51,8 +51,8 @@ function CartItemsTable() {
   };
 
   return (
-    <div style={{ width: "calc(100vw - 200px)", paddingTop: "1rem" }}>
-      <Table striped style={{ width: "90%", margin: "auto" }}>
+    <div>
+      <Table id="table" striped style={{ margin: "auto" }}>
         <thead>
           <tr>
             <th>Photo</th>
@@ -82,7 +82,7 @@ function CartItemsTable() {
                   </td>
 
                   <td>
-                    <p style={{ margin: "0", fontWeight: "500" }}>
+                    <p style={{ margin: "0", fontWeight: "450" }}>
                       {item.name}
                     </p>
                   </td>
@@ -91,7 +91,7 @@ function CartItemsTable() {
                     <p style={{ margin: "0", color: "red" }}>₹{item.price}</p>
                   </td>
 
-                  <td>
+                  <td style={{ display: "flex" }}>
                     <button
                       style={{
                         padding: "1px 5px",
@@ -105,7 +105,7 @@ function CartItemsTable() {
                     <input
                       type="number"
                       style={{
-                        width: "60px",
+                        width: "40px",
                         margin: "0 5px",
                         padding: "0 5px",
                       }}

@@ -4,7 +4,7 @@ import axios from "axios";
 export const createOrder = createAsyncThunk("createOrder", async (order) => {
   try {
     const { data } = await axios.post(
-      "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/order/new",
+      "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/order/new",
       { ...order },
       {
         headers: [
@@ -24,8 +24,10 @@ export const createOrder = createAsyncThunk("createOrder", async (order) => {
 export const myOrders = createAsyncThunk("myOrders", async (order) => {
   try {
     const { data } = await axios.get(
-      "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/orders/me",
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/orders/me",
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
     );
     console.log(data);
     return data;
@@ -40,7 +42,7 @@ export const getOrderDetails = createAsyncThunk(
   async (id) => {
     try {
       const { data } = await axios.get(
-        `https://mern-ecommerce-app-backend-one.vercel.app/api/v1/order/${id}`,
+        `https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/order/${id}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }

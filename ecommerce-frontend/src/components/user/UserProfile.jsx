@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DashboardTop from "../layout/DashboardTop";
 import PageTitle from "../layout/PageTitle";
+import "./stylesheets/UserProfile.css";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const UserProfile = () => {
           <Sidebar />
 
           <div
-            className="content-wrapper"
+            id="user-profile"
             style={{
               display: "flex",
               justifyContent: "space-evenly",
@@ -49,7 +50,7 @@ const UserProfile = () => {
                     style={{ borderRadius: "10px" }}
                     alt=""
                   />
-                  {user?.privider == "email" && (
+                  {user?.provider == "email" && (
                     <Button
                       onClick={() => navigate("/user/profile/update")}
                       variant="secondary"

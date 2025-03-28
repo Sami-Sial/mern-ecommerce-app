@@ -1,0 +1,24 @@
+#user-profile {
+  width: calc(100vw - 150px);
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1rem;
+}
+
+@media screen and (max-width: 800px) {
+  #user-profile {
+    width: 100vw;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #user-profile {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .content-wrapper {
+    padding: 0;
+  }
+}

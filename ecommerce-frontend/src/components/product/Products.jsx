@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import PageTitle from "../layout/PageTitle";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Offcanvas from "react-bootstrap/Offcanvas";
 import {
   addItemsToCart,
   clearUserState,
@@ -25,6 +26,8 @@ const products = () => {
   const { totalPages, products, loading, error } = useSelector(
     (state) => state.productSlice
   );
+
+  const [showFilters, setShowFilters] = useState(false);
 
   console.log(products);
   // const addToCart = (product) => {
@@ -53,19 +56,40 @@ const products = () => {
       <Header />
 
       <main style={{ display: "flex" }}>
-        <Sidebar currentPage={currentPage} />
+        <div className="sidebar-wrapper">
+          <Sidebar currentPage={currentPage} />
+        </div>
 
         <div
           id="products"
-          className="content-wrapper"
           style={{
             flexGrow: "1",
             padding: "1rem",
             width: "calc(100vw - 200px)",
             maxHeight: "calc(100vh - 3rem)",
+            minHeight: "calc(100vh - 3rem)",
+            overflowY: "scroll",
           }}
         >
-          <h4 style={{ marginBottom: "2rem" }}>All Products</h4>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "3rem",
+              height: "fit-content",
+              marginBottom: "1rem",
+            }}
+          >
+            <Button
+              onClick={() => setShowFilters(true)}
+              variant="secondary"
+              size="sm"
+              id="responsive-filter"
+            >
+              All Filters
+            </Button>
+            <h2>All Products</h2>
+          </div>
 
           {loading ? (
             <Loader />
@@ -155,6 +179,22 @@ const products = () => {
           )}
         </div>
       </main>
+
+      {/* Filters Offcanvas */}
+      <Offcanvas
+        style={{ width: "200px" }}
+        show={showFilters}
+        onHide={() => setShowFilters(false)}
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>All Filters</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <div className="responsive-filters-sidebar">
+            <Sidebar currentPage={currentPage} />
+          </div>
+        </Offcanvas.Body>
+      </Offcanvas>
 
       {/* <Footer /> */}
     </>

@@ -1,0 +1,23 @@
+#user-cart {
+  min-height: calc(100vh - 3.5rem);
+  max-height: calc(100vh - 3.5rem);
+  overflow: auto;
+  padding-top: 1rem;
+}
+
+#table {
+  width: 90%;
+}
+
+@media screen and (max-width: 900px) {
+  #table {
+    width: 600px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #user-cart {
+    min-height: calc(100vh - 5rem);
+    max-height: calc(100vh - 5rem);
+  }
+}

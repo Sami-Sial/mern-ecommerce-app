@@ -1,24 +1,46 @@
 header {
-    position: sticky;
-    top: 0px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    height: 3.5rem;
-    background-color: #131921;
-    color: white;
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 3.5rem;
+  background-color: #131921;
+  color: white;
 }
 
-#navbar-left, #navbar-middle, #navbar-right {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    cursor: pointer;
+#navbar-left,
+#navbar-middle,
+#navbar-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  cursor: pointer;
 }
 
+@media screen and (max-width: 750px) {
+  #home-link {
+    font-size: 20px;
+    font-weight: 500;
+  }
 
+  #navbar-left {
+    display: none;
+  }
+  #signup-btn {
+    display: none;
+  }
+}
 
-
-
+@media screen and (max-width: 500px) {
+  header {
+    flex-direction: column;
+    height: 5rem;
+    padding: 5px;
+    gap: 5px;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+}

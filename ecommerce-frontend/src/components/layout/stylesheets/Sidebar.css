@@ -1,21 +1,28 @@
 .sidebar {
-    border-right: 2px solid #37475a;
-    width: 200px;
-    height: calc(100vh - 6.5rem);
-    position: sticky;
-    top: 6.5rem;
-    left: 0;
-    padding: 1rem 10px;
+  border-right: 2px solid lightgrey;
+  width: 150px;
+  height: calc(100vh - 6.5rem);
+  position: sticky;
+  top: 6.5rem;
+  left: 0;
+  padding: 1rem 10px;
+  font-weight: 500;
 }
 
 .sidebar-option {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .link {
-    cursor: pointer;
-    text-decoration: none;
-    color: black;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+}
+
+@media screen and (max-width: 800px) {
+  .sidebar {
+    display: none;
+  }
 }

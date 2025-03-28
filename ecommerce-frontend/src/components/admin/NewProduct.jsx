@@ -88,7 +88,7 @@ const NewProdcut = () => {
                   padding: "10px",
                   maxHeight: "fit-content",
                 }}
-                className="form"
+                className="form content-wrapper"
               >
                 <form
                   encType="multipart/form-data"

@@ -64,7 +64,7 @@ const OrderList = () => {
             <div className="content-wrapper">
               <h4 style={{ textAlign: "center" }}>All Orders</h4>
 
-              <Table style={{ width: "90%", margin: "auto" }} striped>
+              <Table style={{ width: "95%", margin: "auto" }} striped>
                 <thead>
                   <tr>
                     <th>Order Id</th>
@@ -82,7 +82,7 @@ const OrderList = () => {
                       <td>{order.createdAt.slice(0, 10)}</td>
                       <td style={{ color: "red" }}>{order.orderStatus}</td>
                       <td>&#x24;{Math.round(order.totalPrice)}</td>
-                      <td>
+                      <td style={{ display: "flex" }}>
                         <Button
                           style={{ padding: "2px", marginRight: "10px" }}
                           size="sm"
@@ -108,7 +108,7 @@ const OrderList = () => {
               </Table>
 
               {/* pagination */}
-              {orders && (
+              {orders && totalOrdersPages > 1 && (
                 <div
                   style={{
                     display: "flex",

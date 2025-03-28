@@ -85,7 +85,7 @@ const ConfirmOrder = () => {
 
       <main style={{ overflowY: "scroll", maxHeight: "calc(100vh - 4rem)" }}>
         <CheckoutSteps activeStep={1} />
-        <div className="content-wrapper">
+        <div className="wrapper">
           <div className="left-section">
             <h4>Your Cart Items:</h4>
 
@@ -190,7 +190,11 @@ const ConfirmOrder = () => {
                   </tfoot>
                 </Table>
 
-                <Button onClick={proceedToPayment} variant="danger">
+                <Button
+                  style={{ marginBottom: "3rem" }}
+                  onClick={proceedToPayment}
+                  variant="danger"
+                >
                   Proceed to Payment
                 </Button>
               </div>

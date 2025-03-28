@@ -7,7 +7,7 @@ export const signup = createAsyncThunk(
     console.log(avatar);
     try {
       const { data } = await axios.post(
-        "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/register",
+        "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/register",
         { name, email, password, avatar },
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -27,7 +27,7 @@ export const signup = createAsyncThunk(
 export const login = createAsyncThunk("login", async ({ email, password }) => {
   try {
     const { data } = await axios.post(
-      "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/login",
+      "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/login",
       { email, password },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -48,7 +48,7 @@ export const loginWithGoogle = createAsyncThunk(
   async (formData) => {
     try {
       const { data } = await axios.post(
-        "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/login/google",
+        "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/login/google",
         { ...formData },
         {
           headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ export const loginWithGoogle = createAsyncThunk(
 export const logout = createAsyncThunk("logout", async () => {
   try {
     const { data } = await axios.get(
-      "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/logout"
+      "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/logout"
     );
 
     console.log(data);
@@ -86,8 +86,10 @@ export const logout = createAsyncThunk("logout", async () => {
 export const loadUser = createAsyncThunk("loadUser", async () => {
   try {
     const { data } = await axios.get(
-      "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/me",
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/me",
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
     );
     console.log(data);
     return data;
@@ -104,7 +106,7 @@ export const updateProfile = createAsyncThunk(
     console.log(sendedData);
     try {
       const { data } = await axios.put(
-        "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/me/update",
+        "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/me/update",
         sendedData,
         {
           headers: [
@@ -129,7 +131,7 @@ export const updatePassword = createAsyncThunk(
   async ({ oldPassword, newPassword, confirmPassword }) => {
     try {
       const { data } = await axios.put(
-        `https://mern-ecommerce-app-backend-one.vercel.app/api/v1/password/update`,
+        `https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/password/update`,
         { oldPassword, newPassword, confirmPassword },
         {
           headers: [
@@ -154,7 +156,7 @@ export const forgotPassword = createAsyncThunk(
   async (email) => {
     try {
       const { data } = await axios.post(
-        `https://mern-ecommerce-app-backend-one.vercel.app/api/v1/password/forgot`,
+        `https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/password/forgot`,
         { email },
         {
           headers: [
@@ -179,7 +181,7 @@ export const resetPassword = createAsyncThunk(
   async ({ token, password, confirmPassword }) => {
     try {
       const { data } = await axios.put(
-        `https://mern-ecommerce-app-backend-one.vercel.app/api/v1/password/reset/${token}`,
+        `https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/password/reset/${token}`,
         { token, password, confirmPassword },
         {
           headers: [
@@ -205,7 +207,7 @@ export const addItemsToCart = createAsyncThunk(
   async ({ id, quantity = 1 }) => {
     try {
       let url =
-        "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/product/" +
+        "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/product/" +
         id;
       const { data } = await axios.get(url);
 

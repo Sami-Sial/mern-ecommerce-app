@@ -44,7 +44,7 @@ const UsersList = () => {
   const showModal = async (id) => {
     try {
       const { data } = await axios.get(
-        "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/admin/user/" +
+        "https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/admin/user/" +
           id
       );
 
@@ -118,7 +118,7 @@ const UsersList = () => {
                           <td>{user.name}</td>
                           <td>{user.email}</td>
                           <td>{user.role}</td>
-                          <td>
+                          <td style={{ display: "flex" }}>
                             <Button
                               onClick={() => showModal(user._id)}
                               style={{ padding: "2px", marginRight: "10px" }}
@@ -142,7 +142,7 @@ const UsersList = () => {
                 </Table>
 
                 {/* pagination */}
-                {users && (
+                {users && totalUsersPages > 1 && (
                   <div
                     style={{
                       display: "flex",

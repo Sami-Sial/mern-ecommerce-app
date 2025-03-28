@@ -1,5 +1,4 @@
 import "./app.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";

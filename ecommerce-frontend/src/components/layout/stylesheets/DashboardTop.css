@@ -1,0 +1,28 @@
+.dashboard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 2rem;
+  height: 3rem;
+  background-color: #37475a;
+  color: white;
+  position: sticky;
+  top: 3.5rem;
+  left: 0;
+}
+
+#menu-icon {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  #menu-icon {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .dashboard-top {
+    padding: 0 5px;
+  }
+}
