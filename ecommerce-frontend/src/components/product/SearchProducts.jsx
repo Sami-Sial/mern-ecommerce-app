@@ -23,7 +23,7 @@ const SearchProducts = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://mern-ecommerce-app-backend-bice.vercel.app/api/v1/products/searched?search_query=${search}`
+        `https://mern-ecommerce-app-backend-one.vercel.app/api/v1/products/searched?search_query=${search}`
       );
 
       setProducts(data.products);
