@@ -50,10 +50,11 @@ module.exports.getFilteredProducts = AsyncErrorHandler(async (req, res) => {
   console.log(currentPage);
   console.log(skip);
 
-  const totalProducts = await Product.countDocuments();
-  const totalPages = Math.ceil(totalProducts / resultPerPage);
-
   let products = await Product.find(filters).skip(skip).limit(resultPerPage);
+
+  const totalProducts = await Product.find(filters).skip(skip);
+  const totalPages = Math.ceil(totalProducts.length / resultPerPage);
+  console.log(totalPages);
 
   res.status(200).json({
     success: true,

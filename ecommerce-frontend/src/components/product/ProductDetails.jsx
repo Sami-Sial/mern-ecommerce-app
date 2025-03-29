@@ -194,7 +194,7 @@ const ProductDetails = () => {
                         indicators={false}
                         variant="dark"
                         style={{
-                          width: "50vw",
+                          width: "100%",
                           height: "auto",
                           border: "1px solid black",
                           borderRadius: "10px",
@@ -218,6 +218,8 @@ const ProductDetails = () => {
 
                 {/* review modal */}
                 <Modal
+                  size="lg"
+                  fullscreen="sm"
                   show={reviewModalShow}
                   onHide={() => setReviewModalShow(false)}
                 >
@@ -239,7 +241,7 @@ const ProductDetails = () => {
                     <textarea
                       name=""
                       style={{
-                        width: "400px",
+                        width: "100%",
                         height: "150px",
                         padding: "10px",
                         fontSize: "17px",

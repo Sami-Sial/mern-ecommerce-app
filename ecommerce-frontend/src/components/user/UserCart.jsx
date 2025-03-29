@@ -24,12 +24,7 @@ const UserCart = () => {
           {user && <Sidebar />}
 
           {cartItems && cartItems.length ? (
-            <div
-              id="user-cart"
-              style={{
-                width: user ? "calc(100vw - 150px)" : "100vw",
-              }}
-            >
+            <div id="user-cart">
               <h4 style={{ textAlign: "center" }}>Cart Items</h4>
               <CartItemsTable />
             </div>

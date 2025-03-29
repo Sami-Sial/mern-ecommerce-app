@@ -51,7 +51,7 @@ const products = () => {
   console.log(products);
   return (
     <>
-      <PageTitle title={"Ecommerec- Products"} />
+      <PageTitle title={"Ecommerce- Products"} />
 
       <Header />
 

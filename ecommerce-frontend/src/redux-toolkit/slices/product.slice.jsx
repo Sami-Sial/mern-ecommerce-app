@@ -55,7 +55,12 @@ export const newReview = createAsyncThunk(
       const { data } = await axios.put(
         "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/review",
         { rating, comment, productId },
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       console.log(data);

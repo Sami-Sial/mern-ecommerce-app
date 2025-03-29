@@ -27,12 +27,20 @@
   margin: 0;
 }
 
+.reviews {
+  width: 60vw;
+  margin: auto;
+}
+
 @media screen and (max-width: 900px) {
   #details-left {
     width: 40vw;
   }
   #details-right {
     width: 55vw;
+  }
+  .reviews {
+    width: 90vw;
   }
 }
 

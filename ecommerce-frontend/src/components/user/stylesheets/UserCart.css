@@ -1,15 +1,19 @@
 #user-cart {
-  min-height: calc(100vh - 3.5rem);
-  max-height: calc(100vh - 3.5rem);
+  min-height: calc(100vh - 6.5rem);
+  max-height: calc(100vh - 6.5rem);
   overflow: auto;
   padding-top: 1rem;
+  margin: auto;
 }
 
 #table {
   width: 90%;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
+  #user-cart {
+    width: 100vw;
+  }
   #table {
     width: 600px;
   }
@@ -17,7 +21,7 @@
 
 @media screen and (max-width: 500px) {
   #user-cart {
-    min-height: calc(100vh - 5rem);
-    max-height: calc(100vh - 5rem);
+    min-height: calc(100vh - 8rem);
+    max-height: calc(100vh - 8rem);
   }
 }

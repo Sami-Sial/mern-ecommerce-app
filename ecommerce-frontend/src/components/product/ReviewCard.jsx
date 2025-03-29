@@ -42,7 +42,7 @@ const ReviewCard = ({ review }) => {
         readOnly
       />
 
-      <span style={{ marginTop: "10px" }}>Comment : {review.comment}</span>
+      <span style={{ margin: "10px 3rem 0" }}>Comment : {review.comment}</span>
     </div>
   );
 };

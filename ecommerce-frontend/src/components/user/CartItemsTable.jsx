@@ -165,7 +165,7 @@ function CartItemsTable() {
       </Table>
 
       <div style={{ textAlign: "center", margin: "1rem" }}>
-        <Button onClick={checkoutHandler} variant="primary">
+        <Button onClick={checkoutHandler} variant="success">
           Checkout
         </Button>
       </div>
