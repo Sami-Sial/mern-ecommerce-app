@@ -7,7 +7,7 @@ import Chart from "chart.js/auto";
 import { Doughnut, Bar } from "react-chartjs-2";
 import Button from "react-bootstrap/esm/Button";
 import { useSelector, useDispatch } from "react-redux";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import {
   getAdminProducts,
@@ -76,7 +76,7 @@ const AdminDashboard = () => {
       <PageTitle title={"Ecommerce-Admin Dashboard"} />
 
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <Sidebar />

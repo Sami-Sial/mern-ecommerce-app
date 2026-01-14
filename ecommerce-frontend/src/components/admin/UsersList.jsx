@@ -19,7 +19,7 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import axios from "axios";
 import PageTitle from "../layout/PageTitle";
-import DashboardTop from "../layout/DashboardTop";
+
 import EditIcon from "@material-ui/icons/Edit";
 
 const UsersList = () => {
@@ -44,8 +44,7 @@ const UsersList = () => {
   const showModal = async (id) => {
     try {
       const { data } = await axios.get(
-        "https://mern-ecommerce-app-backend-one.vercel.app/api/v1/admin/user/" +
-          id
+        "${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/user/" + id
       );
 
       setUser(data.user);
@@ -86,7 +85,7 @@ const UsersList = () => {
       ) : (
         <>
           <Header />
-          <DashboardTop />
+
           <main>
             <div style={{ display: "flex" }}>
               <Sidebar />

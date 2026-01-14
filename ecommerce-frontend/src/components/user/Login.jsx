@@ -86,7 +86,7 @@ const Login = () => {
       {loading ? (
         <Loader />
       ) : (
-        <main>
+        <main className="wrapper">
           <div className="form">
             <form onSubmit={loginSubmit}>
               <h2 style={{ marginBottom: "10px" }}>Login</h2>
@@ -140,6 +140,28 @@ const Login = () => {
               >
                 Continue with Google
               </button>
+
+              <p
+                style={{
+                  marginTop: "1rem",
+                  textAlign: "center",
+                  color: "#aaa",
+                  fontSize: "0.9rem",
+                }}
+              >
+                Don’t have an account?{" "}
+                <Link
+                  to="/signup"
+                  style={{
+                    color: "#fff",
+                    fontWeight: "600",
+                    textDecoration: "none",
+                  }}
+                >
+                  Sign up
+                </Link>
+              </p>
+
             </form>
           </div>
         </main>

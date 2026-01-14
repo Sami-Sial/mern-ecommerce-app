@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Button from "react-bootstrap/esm/Button";
 import "./stylesheets/NewProduct.css";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -84,7 +84,7 @@ const UpdateProduct = () => {
     <>
       <PageTitle title={"Ecommerce- Admin Update Product"} />
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <SideBar />

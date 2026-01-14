@@ -99,7 +99,7 @@ const Signup = () => {
         <>
           <Header />
 
-          <main>
+          <main className="wrapper">
             <div className="form">
               <form
                 method="post"

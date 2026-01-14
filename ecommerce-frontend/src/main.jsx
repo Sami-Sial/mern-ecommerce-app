@@ -10,11 +10,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     {/* <RouterProvider router={router} /> */}
-    <GoogleOAuthProvider clientId="833859171596-tb23mu7p887vakeghirfgi36j0v1uuh1.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <App />
     </GoogleOAuthProvider>
     <ToastContainer
-      position="top-center"
+      position="top-right"
       autoClose={5000}
       hideProgressBar={false}
       newestOnTop={false}

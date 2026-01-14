@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Table from "react-bootstrap/Table";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -55,7 +55,7 @@ const OrderList = () => {
       <PageTitle title={"Ecommerec-Admin Orders"} />
 
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <Sidebar />

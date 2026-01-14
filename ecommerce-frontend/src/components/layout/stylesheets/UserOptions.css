@@ -1,0 +1,396 @@
+/* ============================================
+   USER OPTIONS DROPDOWN STYLES
+   ============================================ */
+
+.user-options-wrapper {
+    position: relative;
+}
+
+/* ============================================
+   DROPDOWN TOGGLE BUTTON
+   ============================================ */
+.user-dropdown-toggle {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.5rem 1rem !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    min-width: 120px;
+}
+
+.user-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.user-dropdown-toggle:focus {
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.3) !important;
+}
+
+.user-dropdown-toggle::after {
+    display: none !important;
+}
+
+/* ============================================
+   USER AVATAR IN TOGGLE
+   ============================================ */
+.user-avatar-wrapper {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.user-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 152, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.user-dropdown-toggle:hover .user-avatar-img {
+    border-color: #ff9800;
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
+}
+
+/* Avatar Initials Fallback */
+.user-avatar-initials {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: white;
+    border: 2px solid rgba(255, 152, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.user-dropdown-toggle:hover .user-avatar-initials {
+    border-color: #ff9800;
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
+}
+
+/* Status Indicator (Online) */
+.user-status-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: #4caf50;
+    border: 2px solid #131921;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+/* User Name Text */
+.user-name-text {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: white;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Dropdown Arrow */
+.dropdown-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+    margin-left: auto;
+}
+
+.user-dropdown-toggle[aria-expanded="true"] .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* ============================================
+   DROPDOWN MENU
+   ============================================ */
+.user-dropdown-menu {
+    min-width: 280px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #1e2936 0%, #131921 100%) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 0.5rem !important;
+    animation: dropdownFadeIn 0.3s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   DROPDOWN USER HEADER
+   ============================================ */
+.dropdown-user-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 152, 0, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px 12px 0 0;
+}
+
+.dropdown-user-avatar {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.dropdown-user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff9800;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.dropdown-avatar-initials {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+    border: 2px solid #ff9800;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.dropdown-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.dropdown-user-info h6 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-user-info p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-role-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   DROPDOWN MENU ITEMS
+   ============================================ */
+.dropdown-menu-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    padding: 0.875rem 1.25rem !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    background: transparent !important;
+    position: relative !important;
+}
+
+.dropdown-menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.dropdown-menu-item:hover {
+    background: rgba(255, 152, 0, 0.1) !important;
+    padding-left: 1.5rem !important;
+}
+
+.dropdown-menu-item:hover::before {
+    transform: scaleY(1);
+}
+
+.dropdown-menu-item:active {
+    background: rgba(255, 152, 0, 0.15) !important;
+}
+
+/* Dropdown Icons */
+.dropdown-icon {
+    width: 20px !important;
+    height: 20px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: all 0.3s ease !important;
+}
+
+.dropdown-menu-item:hover .dropdown-icon {
+    color: #ff9800 !important;
+    transform: scale(1.1);
+}
+
+/* Cart Badge in Dropdown */
+.cart-badge-dropdown {
+    margin-left: auto;
+    padding: 0.25rem 0.5rem;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 10px;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* ============================================
+   LOGOUT ITEM (Special Styling)
+   ============================================ */
+.logout-item {
+    color: #ff5252 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    margin-top: 0.5rem !important;
+}
+
+.logout-item::before {
+    background: #ff5252 !important;
+}
+
+.logout-item:hover {
+    background: rgba(255, 82, 82, 0.1) !important;
+}
+
+.logout-item .dropdown-icon {
+    color: #ff5252 !important;
+}
+
+.logout-item:hover .dropdown-icon {
+    color: #ff1744 !important;
+}
+
+/* ============================================
+   DROPDOWN DIVIDER
+   ============================================ */
+.user-dropdown-menu .dropdown-divider {
+    margin: 0.5rem 0 !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media screen and (max-width: 750px) {
+    .user-name-text {
+        display: none;
+    }
+
+    .user-dropdown-toggle {
+        min-width: auto;
+        padding: 0.5rem !important;
+    }
+
+    .dropdown-arrow {
+        display: none;
+    }
+
+    .user-dropdown-menu {
+        min-width: 260px !important;
+    }
+
+    .dropdown-user-header {
+        padding: 1rem;
+    }
+
+    .dropdown-user-avatar {
+        width: 45px;
+        height: 45px;
+    }
+
+    .dropdown-menu-item {
+        padding: 0.75rem 1rem !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .user-dropdown-menu {
+        min-width: 240px !important;
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    .dropdown-user-info h6 {
+        font-size: 0.9rem;
+    }
+
+    .dropdown-user-info p {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+.dropdown-menu-item:focus-visible {
+    outline: 2px solid #ff9800;
+    outline-offset: -2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .user-dropdown-menu,
+    .dropdown-menu-item,
+    .dropdown-arrow,
+    .user-avatar-img,
+    .user-avatar-initials {
+        animation: none !important;
+        transition: none !important;
+    }
+}

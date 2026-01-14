@@ -12,7 +12,7 @@ import SideBar from "../layout/DashboardSidebar";
 import { toast } from "react-toastify";
 import Button from "react-bootstrap/esm/Button";
 import PersonIcon from "@mui/icons-material/Person";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -77,7 +77,7 @@ const NewProdcut = () => {
       ) : (
         <>
           <Header />
-          <DashboardTop />
+
           <main>
             <div style={{ display: "flex" }}>
               <SideBar />

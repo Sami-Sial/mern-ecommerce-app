@@ -66,29 +66,33 @@ const products = () => {
             flexGrow: "1",
             padding: "1rem",
             width: "calc(100vw - 200px)",
-            maxHeight: "calc(100vh - 3rem)",
-            minHeight: "calc(100vh - 3rem)",
-            overflowY: "scroll",
           }}
         >
           <div
+            className="products-header"
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "3rem",
-              height: "fit-content",
+              gap: "2rem",
               marginBottom: "1rem",
             }}
           >
+            <div>
+              <h2>Shop the Collection</h2>
+              <p style={{ color: "#6c757d", marginTop: "-5px" }}>
+                Trending now • Best picks • Top brands 🔥
+              </p>
+            </div>
+
+
             <Button
               onClick={() => setShowFilters(true)}
-              variant="secondary"
+              variant="dark"
               size="sm"
               id="responsive-filter"
             >
               All Filters
             </Button>
-            <h2>All Products</h2>
           </div>
 
           {loading ? (
@@ -114,26 +118,16 @@ const products = () => {
                           {product.brand ? <p>{product.brand}</p> : <></>}
                         </span>
 
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <p style={{ color: "red" }}>
-                            Price : &#x24;{product.price}
-                          </p>
+                        <div className="product-bottom">
+                          <p className="product-price">${product.price}</p>
 
-                          <div>
-                            {product.stock > 0 ? (
-                              <p style={{ color: "green" }}>
-                                Status : In Stock
-                              </p>
-                            ) : (
-                              <p style={{ color: "red" }}>
-                                Status : Out of Stock
-                              </p>
-                            )}
+                          <div className="rating-container">
+                            <span className="rating-stars">
+                              ⭐ {product.ratings?.toFixed(1) || "0.0"}
+                            </span>
+                            <span className="review-count">
+                              ({product.numOfReviews || 0} reviews)
+                            </span>
                           </div>
                         </div>
 
@@ -182,13 +176,16 @@ const products = () => {
 
       {/* Filters Offcanvas */}
       <Offcanvas
-        style={{ width: "200px" }}
+        backdrop={true}
+        scroll={false}
+        placement="start"
+        style={{ width: "fit-content" }}
         show={showFilters}
+        onEnter={() => document.body.classList.add("offcanvas-open")}
+        onExited={() => document.body.classList.remove("offcanvas-open")}
         onHide={() => setShowFilters(false)}
       >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>All Filters</Offcanvas.Title>
-        </Offcanvas.Header>
+        <Offcanvas.Header closeButton />
         <Offcanvas.Body>
           <div className="responsive-filters-sidebar">
             <Sidebar currentPage={currentPage} />
@@ -196,7 +193,7 @@ const products = () => {
         </Offcanvas.Body>
       </Offcanvas>
 
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

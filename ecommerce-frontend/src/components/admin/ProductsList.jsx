@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Sidebar from "../layout/DashboardSidebar";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Pagination from "@mui/material/Pagination";
@@ -79,7 +79,7 @@ const ProductList = () => {
       <PageTitle title={"Ecommerce-Admin Products List"} />
 
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <Sidebar />

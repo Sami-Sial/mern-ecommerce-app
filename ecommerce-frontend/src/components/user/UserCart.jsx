@@ -5,7 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Button from "react-bootstrap/esm/Button";
 import CartItemsTable from "./CartItemsTable";
 import { useSelector } from "react-redux";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import "./stylesheets/UserCart.css";
 
@@ -17,7 +17,6 @@ const UserCart = () => {
     <>
       <PageTitle title={"Ecommerce- Cart"} />
       <Header />
-      {user && <DashboardTop />}
 
       <main>
         <div style={{ display: "flex" }}>

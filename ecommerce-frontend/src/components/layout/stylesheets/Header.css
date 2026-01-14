@@ -1,46 +1,412 @@
+/* ============================================
+   IMPROVED HEADER STYLES
+   ============================================ */
+
 header {
   position: sticky;
-  top: 0px;
-  z-index: 10;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #1a2332 0%, #131921 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  padding: 0 2rem;
+  min-height: 4rem;
+}
+
+/* Add elevated shadow on scroll */
+header.scrolled {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #131921 0%, #0f1419 100%);
+}
+
+/* Main header container */
+.header-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 3.5rem;
-  background-color: #131921;
-  color: white;
+  height: 4rem;
+  gap: 2rem;
 }
 
-#navbar-left,
-#navbar-middle,
-#navbar-right {
+/* ============================================
+   LOGO SECTION
+   ============================================ */
+#navbar-left {
   display: flex;
-  gap: 15px;
   align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+
+  /* Glass-morphism effect */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+
+  /* Refined look */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s ease;
+}
+
+#navbar-left:hover {
+  transform: scale(1.04);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+#navbar-left h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  opacity: 0.95;
+  letter-spacing: 0.5px;
+}
+
+#navbar-left img {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+
+  /* Cleaner shadow */
+  box-shadow: 0px 4px 12px rgba(255, 152, 0, 0.35);
+  transition: transform 0.25s ease;
+}
+
+#navbar-left:hover img {
+  transform: rotate(3deg) scale(1.05);
+}
+/* ============================================
+   NAVIGATION LINKS
+   ============================================ */
+#navbar-middle {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+}
+
+#navbar-middle a,
+#navbar-middle button {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  background: transparent;
   cursor: pointer;
 }
 
-@media screen and (max-width: 750px) {
-  #home-link {
-    font-size: 20px;
-    font-weight: 500;
+/* Simple hover effect - no borders */
+#navbar-middle a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ff9800;
+  transform: translateY(-2px);
+}
+
+/* Search link special styling */
+#navbar-middle .search-link {
+  background: rgba(255, 152, 0, 0.15);
+}
+
+#navbar-middle .search-link:hover {
+  background: rgba(255, 152, 0, 0.25);
+}
+
+/* ============================================
+   RIGHT SECTION (Cart & Auth)
+   ============================================ */
+#navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Cart Link Styling */
+#navbar-right>a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#navbar-right>a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Auth Links Container */
+#navbar-right>div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+#navbar-right>div>a {
+  color: white;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#navbar-right>div>a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   MOBILE MENU BUTTON
+   ============================================ */
+.mobile-menu-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-btn svg {
+  display: block;
+}
+
+/* Mobile menu overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.mobile-menu-overlay.active {
+  display: block;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - BELOW 1100px
+   ============================================ */
+@media screen and (max-width: 1100px) {
+
+  /* Hide center navigation links and cart */
+  #navbar-middle {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #1a2332 0%, #131921 100%);
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 999;
   }
 
-  #navbar-left {
+  #navbar-middle.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  #navbar-middle a,
+  #navbar-middle button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Show three-dot menu button */
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  /* Reduce font and button sizes */
+  #navbar-left h2 {
+    font-size: 1.3rem;
+  }
+
+  #navbar-left img {
+    width: 32px;
+    height: 32px;
+  }
+
+  #navbar-right>a,
+  #navbar-right>div>a {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  /* Hide cart link on desktop, show in dropdown */
+  #navbar-right>a:first-of-type {
     display: none;
   }
-  #signup-btn {
-    display: none;
+
+  /* Add cart to mobile menu */
+  #navbar-middle a:last-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 0.5rem;
+    padding-top: 1rem;
   }
 }
 
-@media screen and (max-width: 500px) {
+/* ============================================
+   SMALLER SCREENS
+   ============================================ */
+@media screen and (max-width: 768px) {
   header {
-    flex-direction: column;
-    height: 5rem;
-    padding: 5px;
-    gap: 5px;
-    justify-content: center;
-    padding: 1rem 0;
+    padding: 0 1rem;
+  }
+
+  #navbar-left h2 {
+    font-size: 1.2rem;
+  }
+
+  #navbar-left {
+    padding: 0.4rem;
+  }
+
+  #navbar-right>div>a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  header {
+    padding: 0.75rem 1rem;
+  }
+
+  .header-wrapper {
+    gap: 1rem;
+  }
+
+  #navbar-left h2 {
+    font-size: 1.1rem;
+  }
+
+  #navbar-left img {
+    width: 28px;
+    height: 28px;
+  }
+
+  #navbar-right {
+    gap: 0.75rem;
+  }
+
+  #navbar-right>div>a {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  header {
+    padding: 0.5rem;
+  }
+
+  #navbar-left h2 {
+    font-size: 1rem;
+  }
+
+  #navbar-left {
+    padding: 0.3rem;
+  }
+
+  .mobile-menu-btn {
+    padding: 0.4rem;
+    font-size: 1.3rem;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+header {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Pulse effect for cart when items added */
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.cart-pulse {
+  animation: pulse 0.3s ease;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #ff9800;
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

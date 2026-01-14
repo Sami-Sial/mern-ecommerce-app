@@ -14,7 +14,7 @@ import {
 } from "../../redux-toolkit/slices/user.slice";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 
 const UpdatePassword = () => {

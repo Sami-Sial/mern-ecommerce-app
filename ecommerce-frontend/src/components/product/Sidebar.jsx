@@ -10,7 +10,6 @@ const Sidebar = ({ currentPage }) => {
   const [brandFilters, setBrandFilters] = useState([]);
   const [ratings, setRatings] = useState(0);
   const [price, setPrice] = useState(0);
-  console.log(currentPage);
 
   const categories = [
     "men's clothing",
@@ -22,7 +21,6 @@ const Sidebar = ({ currentPage }) => {
     "jewelery",
     "fragrances",
   ];
-  // const brands = ["nike", "adidas", "puma", "levis", "zara"];
 
   const handleCategoryFilters = (selectedCategory) => {
     if (categoryFilters.includes(selectedCategory)) {
@@ -53,13 +51,13 @@ const Sidebar = ({ currentPage }) => {
 
   return (
     <div className="filter-sidebar">
-      <h5 style={{ marginBottom: "1rem" }}>Filters</h5>
+      <h5>Filters</h5>
 
-      <div style={{ marginBottom: "20px" }}>
+      <div>
         <h6>Category</h6>
         {categories &&
           categories.map((category) => (
-            <div className="checkbox">
+            <div className="checkbox" key={category}>
               <input
                 type="checkbox"
                 onChange={(e) => handleCategoryFilters(category)}
@@ -70,49 +68,44 @@ const Sidebar = ({ currentPage }) => {
           ))}
       </div>
 
-      {/* <div style={{ marginBottom: "20px" }}>
-        <h6>Brand</h6>
-        {brands &&
-          brands.map((brand) => (
-            <div className="checkbox">
-              <input
-                type="checkbox"
-                onChange={(e) => handleBrandFilters(brand)}
-                id={brand}
-              />
-              <label htmlFor={brand}>{brand}</label>
-            </div>
-          ))}
-      </div> */}
-
-      <div style={{ marginBottom: "20px" }}>
-        <h6>Price</h6>
+      <div>
+        <h6>Price Range</h6>
         <Slider
           value={price}
           onChange={(e, newPrice) => setPrice(newPrice)}
           valueLabelDisplay="auto"
-          aria-labelledby="continuous-slider"
-          size="small"
+          aria-labelledby="price-slider"
+          size="medium"
           min={0}
-          max={1000}
-          color="danger"
+          max={10000}
         />
+        <div className="filter-value-display">
+          <span>Min: ₹0</span>
+          <span>Max: ₹{price}</span>
+        </div>
       </div>
 
-      <div style={{ marginBottom: "20px" }}>
+      <div>
         <h6>Ratings</h6>
         <Slider
           value={ratings}
           onChange={(e, newRating) => {
             setRatings(newRating);
           }}
-          aria-labelledby="continuous-slider"
+          aria-labelledby="rating-slider"
           valueLabelDisplay="auto"
           min={0}
           max={5}
-          color="danger"
-          size="small"
+          step={0.5}
+          size="medium"
+          marks={[
+            { value: 0, label: "0★" },
+            { value: 5, label: "5★" },
+          ]}
         />
+        <div className="filter-value-display">
+          <span>⭐ {ratings.toFixed(1)} & above</span>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import Button from "react-bootstrap/esm/Button";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import "./stylesheets/UserProfile.css";
 
@@ -20,7 +20,7 @@ const UserProfile = () => {
     <>
       <PageTitle title={`Ecommerce-${user.name}'s Dashboard`} />
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <Sidebar />

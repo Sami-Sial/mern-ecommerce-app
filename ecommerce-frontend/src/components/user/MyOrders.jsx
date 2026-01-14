@@ -8,7 +8,7 @@ import Button from "react-bootstrap/esm/Button";
 import Table from "react-bootstrap/Table";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import exclamationImg from "../../assets/exclamation_mark.jpg";
 import {
@@ -40,7 +40,7 @@ const UserOrders = () => {
     <>
       <PageTitle title={`Ecommerce- ${user.name}'s Orders`} />
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <Sidebar />

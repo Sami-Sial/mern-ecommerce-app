@@ -13,7 +13,7 @@ import {
   processOrder,
   clearAdminState,
 } from "../../redux-toolkit/slices/admin.slice.jsx";
-import DashboardTop from "../layout/DashboardTop";
+
 import PageTitle from "../layout/PageTitle";
 import { toast } from "react-toastify";
 
@@ -55,7 +55,7 @@ const ProcessOrder = () => {
       <PageTitle title={"Ecoomerce-Admin Process Order"} />
 
       <Header />
-      <DashboardTop />
+
       <main>
         <div style={{ display: "flex" }}>
           <Sidebar />

@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Button from "react-bootstrap/Button";
-import DashboardTop from "../layout/DashboardTop";
 
 import Sidebar from "../layout/DashboardSidebar";
 
@@ -20,7 +19,7 @@ const Account = () => {
     <>
       <PageTitle title={`Ecommerce - ${user.name}'s Dashboard`} />
       <Header />
-      <DashboardTop />
+
       <main>
         <div id="profile-container">
           <Sidebar />
