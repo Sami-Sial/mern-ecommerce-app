@@ -18,8 +18,8 @@ module.exports.processPayment = AsyncErrorHandler(async (req, res, next) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:5173/user/payment/success",
-    cancel_url: "http://localhost:5173/user/payment/failure",
+    success_url: `${process.env.FRONTEND_URL}/user/payment/success`,
+    cancel_url: `${process.env.FRONTEND_URL}/user/payment/failure`,
   });
 
   res.json({ id: session.id });

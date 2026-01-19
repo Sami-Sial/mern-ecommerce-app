@@ -1,16 +1,11 @@
-import Table from "react-bootstrap/Table";
-import image from "../../assets/herosection_img2.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
   addItemsToCart,
   deleteCartItem,
 } from "../../redux-toolkit/slices/user.slice";
-import { useState } from "react";
 
 function CartItemsTable() {
   const { cartItems } = useSelector((state) => state.userSlice);
@@ -20,10 +15,10 @@ function CartItemsTable() {
 
   const increaseQuantity = (id, quantity, stock) => {
     if (stock <= quantity) {
+      toast.warning("Maximum stock reached");
       return;
     }
     quantity += 1;
-    console.log(quantity);
     dispatch(addItemsToCart({ id, quantity }));
   };
 
@@ -32,13 +27,12 @@ function CartItemsTable() {
       return;
     }
     quantity -= 1;
-    console.log(quantity);
     dispatch(addItemsToCart({ id, quantity }));
   };
 
   const deleteCartItems = (id) => {
     dispatch(deleteCartItem(id));
-    toast.success("Cart item deleted successfully");
+    toast.success("Item removed from cart");
   };
 
   const checkoutHandler = () => {
@@ -46,128 +40,139 @@ function CartItemsTable() {
       navigate("/login?redirect=shipping");
       return;
     }
-
     navigate("/user/shipping");
   };
 
+  const totalAmount = cartItems.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="empty-cart">
+        <div className="empty-cart-image-wrapper">
+          <img
+            src={emptyCart}
+            alt="Empty Shopping Cart"
+            className="empty-cart-image"
+          />
+        </div>
+        <h2 className="empty-cart-title">No Items in Cart</h2>
+        <p className="empty-cart-text">Your shopping cart is waiting to be filled with amazing products!</p>
+        <Link to="/" className="shop-now-link">
+          View Products
+        </Link>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <Table id="table" striped style={{ margin: "auto" }}>
-        <thead>
-          <tr>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
+    <div className="cart-container">
+      <div className="cart-header">
+        <h1 className="cart-title">Shopping Cart</h1>
+        <p className="item-count">
+          {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
+        </p>
+      </div>
 
-        <tbody>
-          {cartItems &&
-            cartItems.length >= 1 &&
-            cartItems.map((item) => {
-              return (
-                <tr>
-                  <td style={{ display: "flex", gap: "10px" }}>
-                    <Link to={`/product/${item._id}`}>
-                      <img
-                        src={item.images[0]?.url}
-                        width={40}
-                        height={40}
-                        style={{ borderRadius: "5px" }}
-                        alt=""
-                      />
-                    </Link>
-                  </td>
+      <div className="cart-content">
+        <div className="items-section">
+          {cartItems.map((item) => (
+            <div key={item._id} className="cart-item">
+              <Link to={`/product/${item._id}`} className="image-link">
+                <img
+                  src={item.images[0]?.url}
+                  alt={item.name}
+                  className="cart-product-image"
+                />
+              </Link>
 
-                  <td>
-                    <p style={{ margin: "0", fontWeight: "450" }}>
-                      {item.name}
-                    </p>
-                  </td>
+              <div className="item-details">
+                <Link to={`/product/${item._id}`} className="product-name">
+                  {item.name}
+                </Link>
+                <p className="product-price">₹{item.price.toLocaleString()}</p>
+                {item.stock <= 5 && (
+                  <span className="low-stock">
+                    Only {item.stock} left in stock
+                  </span>
+                )}
+              </div>
 
-                  <td>
-                    <p style={{ margin: "0", color: "red" }}>₹{item.price}</p>
-                  </td>
+              <div className="quantity-section">
+                <div className="quantity-control">
+                  <button
+                    className="quantity-btn"
+                    onClick={() => decreaseQuantity(item._id, item.quantity)}
+                    disabled={item.quantity <= 1}
+                  >
+                    −
+                  </button>
+                  <span className="quantity-value">{item.quantity}</span>
+                  <button
+                    className="quantity-btn"
+                    onClick={() =>
+                      increaseQuantity(item._id, item.quantity, item.stock)
+                    }
+                    disabled={item.quantity >= item.stock}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
 
-                  <td style={{ display: "flex" }}>
-                    <button
-                      style={{
-                        padding: "1px 5px",
-                        borderRadius: "5px",
-                        border: "1px solid black",
-                      }}
-                      onClick={() => decreaseQuantity(item._id, item.quantity)}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      style={{
-                        width: "40px",
-                        margin: "0 5px",
-                        padding: "0 5px",
-                      }}
-                      value={item.quantity}
-                      readOnly
-                    />
-                    <button
-                      style={{
-                        padding: "1px 5px",
-                        borderRadius: "5px",
-                        border: "1px solid black",
-                      }}
-                      onClick={() =>
-                        increaseQuantity(item._id, item.quantity, item.stock)
-                      }
-                    >
-                      +
-                    </button>
-                  </td>
+              <div className="subtotal-section">
+                <p className="subtotal">
+                  ₹{(item.price * item.quantity).toLocaleString()}
+                </p>
+              </div>
 
-                  <td>
-                    <p>{`₹${Math.round(item.price * item.quantity)}`}</p>
-                  </td>
+              <button
+                className="delete-btn"
+                onClick={() => deleteCartItems(item._id)}
+                aria-label="Remove item"
+              >
+                <DeleteIcon fontSize="small" />
+              </button>
+            </div>
+          ))}
+        </div>
 
-                  <td>
-                    <Button
-                      onClick={() => deleteCartItems(item._id)}
-                      size="sm"
-                      variant="secondary"
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
+        <div className="summary-section">
+          <div className="summary-card">
+            <h2 className="summary-title">Order Summary</h2>
 
-        <tfoot>
-          <tr>
-            <th>
-              <p>Gross Total</p>
-            </th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>
-              <p>{`₹${Math.round(
-                cartItems.reduce(
-                  (acc, item) => acc + item.quantity * item.price,
-                  0
-                )
-              )}`}</p>
-            </th>
-          </tr>
-        </tfoot>
-      </Table>
+            <div className="summary-row">
+              <span className="summary-label">Subtotal</span>
+              <span className="summary-value">
+                ₹{totalAmount.toLocaleString()}
+              </span>
+            </div>
 
-      <div style={{ textAlign: "center", margin: "1rem" }}>
-        <Button onClick={checkoutHandler} variant="success">
-          Checkout
-        </Button>
+            <div className="summary-row">
+              <span className="summary-label">Shipping</span>
+              <span className="summary-free">Free</span>
+            </div>
+
+            <div className="divider"></div>
+
+            <div className="summary-row">
+              <span className="total-label">Total</span>
+              <span className="total-value">
+                ₹{totalAmount.toLocaleString()}
+              </span>
+            </div>
+
+            <button className="checkout-btn" onClick={checkoutHandler}>
+              Proceed to Checkout
+            </button>
+
+            <Link to="/" className="continue-shopping-link">
+              ← Continue Shopping
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

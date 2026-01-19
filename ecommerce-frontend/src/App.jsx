@@ -11,6 +11,7 @@ import ProtectUserRoute from "./components/protect/ProtectUserRoute.jsx";
 import ProtectAdminRoute from "./components/protect/ProtectAdminRoute.jsx";
 import axios from "axios";
 import UserProfile from "./components/user/UserProfile.jsx";
+import Cursor from "./components/layout/Cursor";
 
 // components Imports
 const HomePage = lazy(() => import("./components/home/Home"));
@@ -91,6 +92,14 @@ function App() {
     { path: "/signup", element: <SignupPage /> },
     { path: "/login", element: <LoginPage /> },
     {
+      path: "/password/forgot",
+      element: <ForgotPasswordPage />,
+    },
+    {
+      path: "/password/reset/:token",
+      element: <ResetPasswordPage />,
+    },
+    {
       path: "/user/password/update",
       element: (
         <ProtectUserRoute>
@@ -106,14 +115,7 @@ function App() {
         </ProtectAdminRoute>
       ),
     },
-    {
-      path: "/password/forgot",
-      element: <ForgotPasswordPage />,
-    },
-    {
-      path: "/password/reset/:token",
-      element: <ResetPasswordPage />,
-    },
+
     {
       path: "/user/profile",
       element: (
@@ -228,6 +230,7 @@ function App() {
   return (
     <>
       <Suspense fallback={<Loader />}>
+        <Cursor />
         <RouterProvider router={router}></RouterProvider>
       </Suspense>
     </>

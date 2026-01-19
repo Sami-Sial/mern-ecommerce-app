@@ -3,193 +3,175 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchFilteredProducts } from "../../redux-toolkit/slices/product.slice";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import Sidebar from "./Sidebar.jsx";
+import Sidebar from "./Sidebar";
 import "./stylesheets/products.css";
-import image from "../../assets/herosection_img2.jpg";
-import Button from "react-bootstrap/esm/Button.js";
+import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import StarIcon from "@mui/icons-material/Star";
 import PageTitle from "../layout/PageTitle";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import {
-  addItemsToCart,
-  clearUserState,
-} from "../../redux-toolkit/slices/user.slice.jsx";
-import Loader from "../layout/Loader.jsx";
+import Loader from "../layout/Loader";
 import { toast } from "react-toastify";
+import GridViewIcon from "@mui/icons-material/GridView";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ProductSkeleton from "../skeletons/ProductSkeleton";
 
-const products = () => {
+const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState(1);
-  const { totalPages, products, loading, error } = useSelector(
+  const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
+
+  const { totalPages, products, isLoading, error } = useSelector(
     (state) => state.productSlice
   );
 
-  const [showFilters, setShowFilters] = useState(false);
-
-  console.log(products);
-  // const addToCart = (product) => {
-  //   if (product.stock > 0) {
-  //     let id = product._id;
-  //     dispatch(addItemsToCart({ id }));
-  //     return;
-  //   }
-
-  //   toast.error("Product is out of stock");
-  // };
-
   useEffect(() => {
-    dispatch(fetchFilteredProducts());
+    dispatch(fetchFilteredProducts({ page: currentPage }));
 
-    if (error) {
-      toast.error(error);
-    }
-  }, [dispatch, error]);
+    if (error) toast.error(error);
+  }, [dispatch, currentPage, error]);
 
-  console.log(products);
   return (
     <>
-      <PageTitle title={"Ecommerce- Products"} />
-
+      <PageTitle title="ShopVerse | Products" />
       <Header />
 
-      <main style={{ display: "flex" }}>
-        <div className="sidebar-wrapper">
+      <main className="products-page">
+        {/* SIDEBAR */}
+        <aside className="sidebar-wrapper">
           <Sidebar currentPage={currentPage} />
-        </div>
+        </aside>
 
-        <div
-          id="products"
-          style={{
-            flexGrow: "1",
-            padding: "1rem",
-            width: "calc(100vw - 200px)",
-          }}
-        >
-          <div
-            className="products-header"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "2rem",
-              marginBottom: "1rem",
-            }}
-          >
+        {/* PRODUCTS */}
+        <section className="products-area">
+          <div className="products-header">
             <div>
               <h2>Shop the Collection</h2>
-              <p style={{ color: "#6c757d", marginTop: "-5px" }}>
-                Trending now • Best picks • Top brands 🔥
-              </p>
+              <p>Trending now • Best picks • Top brands 🔥</p>
             </div>
 
+            <div className="header-controls">
+              {/* VIEW TOGGLE */}
+              <div className="view-toggle">
+                <button
+                  className={`view-btn-toggle ${viewMode === "grid" ? "active" : ""}`}
+                  onClick={() => setViewMode("grid")}
+                  title="Grid View"
+                >
+                  <GridViewIcon sx={{ fontSize: 20 }} />
+                </button>
+                <button
+                  className={`view-btn-toggle ${viewMode === "list" ? "active" : ""}`}
+                  onClick={() => setViewMode("list")}
+                  title="List View"
+                >
+                  <ViewListIcon sx={{ fontSize: 20 }} />
+                </button>
+              </div>
 
-            <Button
-              onClick={() => setShowFilters(true)}
-              variant="dark"
-              size="sm"
-              id="responsive-filter"
-            >
-              All Filters
-            </Button>
+              <Button
+                id="responsive-filter"
+                size="sm"
+                onClick={() => setShowFilters(true)}
+              >
+                All Filters
+              </Button>
+            </div>
           </div>
 
-          {loading ? (
-            <Loader />
+          {isLoading ? (
+            <ProductSkeleton />
           ) : (
             <>
-              {" "}
-              <div className="products-wrapper">
-                {products &&
-                  products.length > 0 &&
-                  products.map((product) => {
-                    return (
-                      <div className="product" key={product._id}>
-                        <img
-                          onClick={() => navigate("/product/" + product._id)}
-                          src={product.images[0].url}
-                          alt=""
-                        />
-                        <h6>{product.name}</h6>
+              <div className={`products-${viewMode}`}>
+                {products?.map((product) => (
+                  <div
+                    className={`product-card ${viewMode}-view`}
+                    key={product._id}
+                    onClick={() => navigate(`/product/${product._id}`)}
+                  >
+                    <div className="product-image-wrapper">
+                      <img
+                        src={product.images[0]?.url}
+                        alt={product.name}
+                        className="product-image"
+                      />
+                    </div>
 
-                        <span>
-                          <p>{product.category}</p>
-                          {product.brand ? <p>{product.brand}</p> : <></>}
+                    <div className="product-content">
+                      <h3 className="product-title">{product.name}</h3>
+
+                      <div className="product-tags">
+                        <span className="tag tag-primary">
+                          {product.category}
                         </span>
+                        {product.brand && (
+                          <span className="tag tag-secondary">
+                            {product.brand}
+                          </span>
+                        )}
+                      </div>
 
-                        <div className="product-bottom">
-                          <p className="product-price">${product.price}</p>
+                      <div className="product-footer">
+                        <p className="product-price">
+                          ${product.price}
+                        </p>
 
-                          <div className="rating-container">
-                            <span className="rating-stars">
-                              ⭐ {product.ratings?.toFixed(1) || "0.0"}
-                            </span>
-                            <span className="review-count">
-                              ({product.numOfReviews || 0} reviews)
+                        <div className="product-rating">
+                          <div className="rating-stars">
+                            <StarIcon sx={{ fontSize: 14 }} />
+                            <span>
+                              {product.ratings?.toFixed(1) || "0.0"}
                             </span>
                           </div>
                         </div>
-
-                        {/* <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <Button
-                            onClick={() => addToCart(product)}
-                            size="sm"
-                            style={{ width: "80%" }}
-                            variant="dark"
-                          >
-                            Add to Cart
-                          </Button>
-                        </div> */}
                       </div>
-                    );
-                  })}
+
+                      <Button
+                        size="sm"
+                        className="view-product-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/product/${product._id}`);
+                        }}
+                      >
+                        View Product
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
-              {/* pagination */}
+
               {totalPages > 1 && (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: "2rem",
-                  }}
-                >
+                <div className="pagination-wrapper">
                   <Stack spacing={2}>
                     <Pagination
                       count={totalPages}
+                      page={currentPage}
                       onChange={(e, page) => setCurrentPage(page)}
-                      color="primary"
                     />
                   </Stack>
                 </div>
               )}
             </>
           )}
-        </div>
+        </section>
       </main>
 
-      {/* Filters Offcanvas */}
+      {/* MOBILE FILTERS */}
       <Offcanvas
-        backdrop={true}
-        scroll={false}
         placement="start"
-        style={{ width: "fit-content" }}
         show={showFilters}
-        onEnter={() => document.body.classList.add("offcanvas-open")}
-        onExited={() => document.body.classList.remove("offcanvas-open")}
         onHide={() => setShowFilters(false)}
       >
         <Offcanvas.Header closeButton />
         <Offcanvas.Body>
-          <div className="responsive-filters-sidebar">
-            <Sidebar currentPage={currentPage} />
-          </div>
+          <Sidebar currentPage={currentPage} />
         </Offcanvas.Body>
       </Offcanvas>
 
@@ -198,4 +180,4 @@ const products = () => {
   );
 };
 
-export default products;
+export default Products;

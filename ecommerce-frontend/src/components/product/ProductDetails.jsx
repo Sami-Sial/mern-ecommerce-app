@@ -132,58 +132,49 @@ const ProductDetails = () => {
                     )}
                     <p>Description : {product.description}</p>
 
-                    <br />
 
-                    <Button
-                      size="sm"
-                      variant="dark"
-                      onClick={() => setReviewModalShow(true)}
-                    >
-                      Add Review
-                    </Button>
 
-                    <div style={{ marginTop: "20px", fontWeight: "bold" }}>
-                      <p>Shop Now</p>
+                    <div className="cart-control-section">
+                      <div className="quantity-wrapper">
+                        <button
+                          type="button"
+                          className="qty-btn"
+                          onClick={decreaseQuantity}
+                          disabled={quantity <= 1}
+                        >
+                          −
+                        </button>
+
+                        <input
+                          type="number"
+                          className="quantity-input"
+                          value={quantity}
+                          readOnly
+                        />
+
+                        <button
+                          type="button"
+                          className="qty-btn"
+                          onClick={increaseQuantity}
+                          disabled={quantity >= product.stock}
+                        >
+                          +
+                        </button>
+                      </div>
+
                       <button
-                        style={{ padding: "2px 5px", borderRadius: "5px" }}
-                        onClick={decreaseQuantity}
-                      >
-                        -
-                      </button>
-                      <input
-                        style={{
-                          width: "100px",
-                          margin: "0 10px",
-                          padding: "0 10px",
-                        }}
-                        readOnly
-                        type="number"
-                        value={quantity}
-                      />
-                      <button
-                        style={{
-                          padding: "2px 5px",
-                          borderRadius: "5px",
-                          marginRight: "15px",
-                        }}
-                        onClick={increaseQuantity}
-                      >
-                        +
-                      </button>
-
-                      <Button
-                        size="sm"
-                        variant="dark"
+                        className={`add-to-cart-btn ${product.stock <= 0 ? "disabled" : ""}`}
                         onClick={addProductsToCart}
+                        disabled={product.stock <= 0}
                       >
-                        Add To Cart
-                      </Button>
+                        {product.stock <= 0 ? "Out of Stock" : "Add to Cart"}
+                      </button>
                     </div>
                   </div>
                 </div>
 
                 {/* reviews */}
-                <h5 style={{ textAlign: "center", marginTop: "1rem" }}>
+                {/* <h5 style={{ textAlign: "center", marginTop: "1rem" }}>
                   Reviews
                 </h5>
 
@@ -215,6 +206,15 @@ const ProductDetails = () => {
                     No Reviews Yet
                   </p>
                 )}
+                <div className="add-review-wrapper">
+                  <button
+                    className="add-review-btn"
+                    onClick={() => setReviewModalShow(true)}
+                  >
+                    Write a Review
+                  </button>
+                </div> */}
+
 
                 {/* review modal */}
                 <Modal

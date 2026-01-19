@@ -1,13 +1,298 @@
-#right {
-  width: 30%;
+/* ========== PROCESS ORDER PAGE STYLES ========== */
+
+/* Main Container */
+.content-wrapper {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: calc(100vh - 80px);
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
-@media screen and (max-width: 800px) {
+/* Left Section - Order Details */
+.content-wrapper>div:first-child {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Section Headings */
+.content-wrapper h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Tables */
+.content-wrapper table {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-size: 0.875rem;
+  border: none;
+}
+
+.content-wrapper table thead {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c3845 100%);
+}
+
+.content-wrapper table thead th {
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1rem 0.75rem;
+  border: none;
+  background: transparent !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.content-wrapper table tbody td {
+  padding: 0.875rem 0.75rem;
+  color: #374151;
+  font-size: 0.8125rem;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.content-wrapper table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.content-wrapper table tbody tr:hover {
+  background: rgba(102, 126, 234, 0.03);
+}
+
+.content-wrapper table tfoot th {
+  background: #f9fafb;
+  padding: 1rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  border-top: 2px solid #e5e7eb;
+}
+
+/* Product Images in Table */
+.content-wrapper table img {
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Right Section */
+#right {
+  width: 350px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+/* Order Address Card */
+#right>div:first-child {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+#right>div:first-child h5 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+#right>div:first-child p {
+  font-size: 0.8125rem;
+  color: #4b5563;
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+#right>div:first-child p strong,
+#right>div:first-child p::before {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Process Order Card */
+#right>div:last-child {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+#right>div:last-child h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#right>div:last-child>div p {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+#right>div:last-child>div p span {
+  font-weight: 700;
+  color: #dc2626;
+  font-size: 0.9375rem;
+}
+
+/* Deliver Order Button */
+#right button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+#right button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+#right button:active {
+  transform: translateY(0);
+}
+
+/* Delivered Status */
+#right>div:last-child>div>div p:first-child {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.5rem;
+}
+
+#right>div:last-child>div>div p:last-child {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Payment Status Success Color */
+.content-wrapper table tbody td[style*="color: green"] {
+  color: #10b981 !important;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
   .content-wrapper {
     flex-direction: column;
-    padding: 10px;
   }
+
   #right {
-    width: 90%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content-wrapper {
+    padding: 1.5rem;
+  }
+
+  .content-wrapper table {
+    font-size: 0.75rem;
+  }
+
+  .content-wrapper table thead th {
+    font-size: 0.6875rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .content-wrapper table tbody td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .content-wrapper table tfoot th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+
+  #right>div {
+    padding: 1.25rem;
+  }
+
+  #right>div:first-child p {
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .content-wrapper {
+    padding: 1rem;
+  }
+
+  .content-wrapper h5 {
+    font-size: 0.875rem;
+  }
+
+  .content-wrapper table {
+    font-size: 0.6875rem;
+  }
+
+  .content-wrapper table thead th {
+    font-size: 0.625rem;
+    padding: 0.625rem 0.375rem;
+  }
+
+  .content-wrapper table tbody td {
+    padding: 0.625rem 0.375rem;
+    font-size: 0.6875rem;
+  }
+
+  .content-wrapper table img {
+    width: 25px;
+    height: 25px;
+  }
+
+  #right>div {
+    padding: 1rem;
+  }
+
+  #right>div:first-child h5,
+  #right>div:last-child h4 {
+    font-size: 0.875rem;
+  }
+
+  #right>div:first-child p {
+    font-size: 0.6875rem;
+  }
+
+  #right button {
+    font-size: 0.75rem;
+    padding: 0.625rem 1.25rem;
   }
 }

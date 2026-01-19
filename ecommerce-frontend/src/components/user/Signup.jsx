@@ -17,7 +17,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, signupSuccess, signupError, loading } = useSelector(
+  const { user, signupSuccess, signupError, isLoading } = useSelector(
     (state) => state.userSlice
   );
 
@@ -41,8 +41,6 @@ const Signup = () => {
             },
           }
         );
-        console.log(res.data);
-
         dispatch(loginWithGoogle(res.data));
       } catch (error) {
         console.log(error);
@@ -54,7 +52,6 @@ const Signup = () => {
     if (e.target.name === "avatar") {
       setAvatar(e.target.files[0]);
       const reader = new FileReader();
-
       reader.onload = () => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
@@ -68,7 +65,6 @@ const Signup = () => {
 
   const registerSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(signup({ name, email, password, avatar }));
   };
 
@@ -85,120 +81,126 @@ const Signup = () => {
     }
 
     if (signupSuccess) {
-      toast.success("Signup successfull. Welcome!");
-
+      toast.success("Signup successful. Welcome!");
       dispatch(clearUserState());
     }
-  }, [user, dispatch, signupSuccess, signupError]);
+  }, [user, dispatch, signupSuccess, signupError, navigate]);
 
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Header />
+      <Header />
 
-          <main className="wrapper">
-            <div className="form">
-              <form
-                method="post"
-                encType="multipart/form-data"
-                onSubmit={registerSubmit}
-              >
-                <h2>Create New Account</h2>
+      <main className="wrapper">
+        <div className="form">
+          <form
+            method="post"
+            encType="multipart/form-data"
+            onSubmit={registerSubmit}
+          >
+            <h2>Create New Account</h2>
 
-                <div className="input-group">
-                  <span className="icon-wrapper">
-                    <FaceIcon />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    required
-                    name="name"
-                    value={name}
-                    onChange={registerDataChange}
-                    autoComplete="true"
-                  />
-                </div>
-
-                <div className="input-group">
-                  <span className="icon-wrapper">
-                    <MailOutlineIcon />
-                  </span>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    name="email"
-                    value={email}
-                    onChange={registerDataChange}
-                    autoComplete="true"
-                  />
-                </div>
-
-                <div className="input-group">
-                  <span className="icon-wrapper">
-                    <LockOpenIcon />
-                  </span>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    required
-                    name="password"
-                    value={password}
-                    onChange={registerDataChange}
-                  />
-                </div>
-
-                <div className="input-group">
-                  <input
-                    style={{
-                      border: "2px solid #37475a",
-                      width: "99%",
-                      borderRadius: "10px",
-                    }}
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
-                    onChange={registerDataChange}
-                    required
-                  />
-                </div>
-
-                {avatarPreview && (
-                  <div style={{ margin: "auto" }}>
-                    <img
-                      style={{ width: "60px" }}
-                      src={avatarPreview}
-                      alt="Avatar Preview"
-                    />
-                  </div>
-                )}
-
-                <input className="form-btn" type="submit" value="Register" />
-
-                <button
-                  className="form-btn"
-                  style={{
-                    backgroundColor: "#131921",
-                    marginTop: "1rem",
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    continueWithGoogle();
-                  }}
-                >
-                  Continue with Google
-                </button>
-              </form>
+            <div className="input-group">
+              <span className="icon-wrapper">
+                <FaceIcon />
+              </span>
+              <input
+                type="text"
+                placeholder="Name"
+                required
+                name="name"
+                value={name}
+                onChange={registerDataChange}
+                autoComplete="true"
+              />
             </div>
-          </main>
 
-          <Footer />
-        </>
-      )}
+            <div className="input-group">
+              <span className="icon-wrapper">
+                <MailOutlineIcon />
+              </span>
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                name="email"
+                value={email}
+                onChange={registerDataChange}
+                autoComplete="true"
+              />
+            </div>
+
+            <div className="input-group">
+              <span className="icon-wrapper">
+                <LockOpenIcon />
+              </span>
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                name="password"
+                value={password}
+                onChange={registerDataChange}
+              />
+            </div>
+
+            <div className="input-group">
+              <input
+                style={{
+                  border: "2px solid #37475a",
+                  width: "99%",
+                  borderRadius: "10px",
+                }}
+                type="file"
+                name="avatar"
+                accept="image/*"
+                onChange={registerDataChange}
+                required
+              />
+            </div>
+
+            {avatarPreview && (
+              <div style={{ margin: "auto" }}>
+                <img
+                  style={{ width: "60px" }}
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                />
+              </div>
+            )}
+
+            {/* 🔹 SIGNUP BUTTON WITH LOADING STATE */}
+            <button
+              type="submit"
+              className="form-btn"
+              disabled={isLoading}
+              style={{
+                backgroundColor: "#111827",
+                color: "#fff",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                marginTop: "1rem",
+              }}
+            >
+              {isLoading ? "Signing up..." : "Register"}
+            </button>
+
+            <button
+              className="form-btn"
+              style={{
+                backgroundColor: "#131921",
+                marginTop: "1rem",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                continueWithGoogle();
+              }}
+            >
+              Continue with Google
+            </button>
+          </form>
+        </div>
+      </main>
+
+      <Footer />
     </>
   );
 };

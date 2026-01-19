@@ -1,48 +1,43 @@
-import Rating from "@mui/material/Rating";
-import Stack from "@mui/material/Stack";
 import React from "react";
-import image from "../../assets/ecommerce-logo.png";
+import Rating from "@mui/material/Rating";
 
 const ReviewCard = ({ review }) => {
+  // Fallback avatar if you don't have user profile pictures yet
+  const defaultAvatar = "https://via.placeholder.com/48?text=U";
+
   return (
-    <div
-      className="reviewCard"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "5px",
-        }}
-      >
+    <div className="review-card">
+      <div className="review-header">
         <img
-          src={image}
-          width={30}
-          height={30}
-          style={{
-            border: "1px solid black",
-            borderRadius: "50%",
-            padding: "2px",
-          }}
-          alt="User"
+          src={review.avatar || defaultAvatar}
+          alt={review.name}
+          className="review-avatar"
         />
-        {review.name}
+        <div className="review-meta">
+          <h6 className="review-name">{review.name}</h6>
+          <Rating
+            name="review-rating"
+            value={review.rating}
+            precision={0.5}
+            readOnly
+            size="small"
+          />
+        </div>
       </div>
 
-      <Rating
-        name="half-rating-read"
-        defaultValue={review.rating}
-        precision={0.5}
-        readOnly
-      />
+      <div className="review-comment">
+        {review.comment}
+      </div>
 
-      <span style={{ margin: "10px 3rem 0" }}>Comment : {review.comment}</span>
+      {review.createdAt && (
+        <div className="review-date">
+          {new Date(review.createdAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
+        </div>
+      )}
     </div>
   );
 };

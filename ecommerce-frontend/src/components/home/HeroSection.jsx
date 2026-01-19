@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 const HeroSection = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -271,15 +272,15 @@ const HeroSection = () => {
         </div>
 
         <div style={styles.ctaButtons}>
-          <button
+          <NavLink to={"/login"}
             style={styles.btnPrimary}
             onMouseEnter={(e) => (e.target.style.transform = "scale(1.06)")}
             onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
           >
             Shop Now →
-          </button>
+          </NavLink>
 
-          <button
+          <NavLink to={"/products"}
             style={styles.btnSecondary}
             onMouseEnter={(e) => {
               e.target.style.background = "rgba(168, 85, 247, 0.1)";
@@ -291,7 +292,7 @@ const HeroSection = () => {
             }}
           >
             View Collections
-          </button>
+          </NavLink>
         </div>
 
         <div style={styles.trustBadges}>
@@ -305,7 +306,7 @@ const HeroSection = () => {
             <svg style={styles.checkIcon} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <span style={styles.trustText}>30-Day Returns</span>
+            <span style={styles.trustText}>No Hidden Charges</span>
           </div>
         </div>
       </div>

@@ -5,7 +5,6 @@ import Footer from "../layout/Footer";
 import { Link, useSearchParams } from "react-router-dom";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-import FaceIcon from "@material-ui/icons/Face";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,15 +17,14 @@ import { useGoogleLogin } from "@react-oauth/google";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, loginSuccess, user, loginError } = useSelector(
+  const { isLoading, loginSuccess, user, loginError } = useSelector(
     (state) => state.userSlice
   );
-  console.log(loading);
 
   const continueWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -39,8 +37,6 @@ const Login = () => {
             },
           }
         );
-        console.log(res.data);
-
         dispatch(loginWithGoogle(res.data));
       } catch (error) {
         console.log(error);
@@ -50,13 +46,12 @@ const Login = () => {
 
   const loginSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(login({ email, password }));
   };
 
   useEffect(() => {
     if (loginSuccess) {
-      toast.success("Login successfull.Welcome!");
+      toast.success("Login successful. Welcome!");
       dispatch(clearUserState());
     }
 
@@ -64,11 +59,11 @@ const Login = () => {
       navigate("/user/shipping");
     }
 
-    if (!redirect && user && user.role == "admin") {
+    if (!redirect && user && user.role === "admin") {
       navigate("/admin/dashboard");
     }
 
-    if (!redirect && user && user.role == "user") {
+    if (!redirect && user && user.role === "user") {
       navigate("/user/profile");
     }
 
@@ -76,96 +71,106 @@ const Login = () => {
       toast.error(loginError);
       dispatch(clearUserState());
     }
-  }, [loginSuccess, dispatch, user, loginError]);
+  }, [loginSuccess, dispatch, user, loginError, navigate, redirect]);
 
   return (
     <>
-      <PageTitle title={"Ecommerce- login"} />
+      <PageTitle title={"Ecommerce - Login"} />
       <Header />
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <main className="wrapper">
-          <div className="form">
-            <form onSubmit={loginSubmit}>
-              <h2 style={{ marginBottom: "10px" }}>Login</h2>
-              <div className="input-group">
-                <span className="icon-wrapper">
-                  <MailOutlineIcon />
-                </span>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  required
-                  id="loginEmail"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
 
-              <div className="input-group">
-                <span className="icon-wrapper">
-                  <LockOpenIcon />
-                </span>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  required
-                  id="loginPassword"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+      <main className="wrapper">
+        <div className="form">
+          <form onSubmit={loginSubmit}>
+            <h2 style={{ marginBottom: "10px" }}>Login</h2>
 
+            <div className="input-group">
+              <span className="icon-wrapper">
+                <MailOutlineIcon />
+              </span>
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                id="loginEmail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="input-group">
+              <span className="icon-wrapper">
+                <LockOpenIcon />
+              </span>
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                id="loginPassword"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <Link
+              style={{ color: "red", textDecoration: "none" }}
+              to="/password/forgot"
+            >
+              Forgot Password?
+            </Link>
+
+            {/* 🔹 LOGIN BUTTON WITH DYNAMIC TEXT */}
+            <button
+              type="submit"
+              className="form-btn"
+              disabled={isLoading}
+              style={{
+                backgroundColor: "#111827",
+                color: "#fff",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                marginTop: "1rem",
+              }}
+            >
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
+
+            <button
+              className="form-btn"
+              style={{
+                backgroundColor: "#131921",
+                marginTop: "1rem",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                continueWithGoogle();
+              }}
+            >
+              Continue with Google
+            </button>
+
+            <p
+              style={{
+                marginTop: "1rem",
+                textAlign: "center",
+                color: "#aaa",
+                fontSize: "0.9rem",
+              }}
+            >
+              Don’t have an account?{" "}
               <Link
-                style={{ color: "red", textDecoration: "none" }}
-                to="/password/forgot"
+                to="/signup"
+                style={{
+                  color: "#fff",
+                  fontWeight: "600",
+                  textDecoration: "none",
+                }}
               >
-                Forgot Password?
+                Sign up
               </Link>
-
-              <input className="form-btn" type="submit" value="Login" />
-
-              <button
-                className="form-btn"
-                style={{
-                  backgroundColor: "#131921",
-                  marginTop: "1rem",
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  continueWithGoogle();
-                }}
-              >
-                Continue with Google
-              </button>
-
-              <p
-                style={{
-                  marginTop: "1rem",
-                  textAlign: "center",
-                  color: "#aaa",
-                  fontSize: "0.9rem",
-                }}
-              >
-                Don’t have an account?{" "}
-                <Link
-                  to="/signup"
-                  style={{
-                    color: "#fff",
-                    fontWeight: "600",
-                    textDecoration: "none",
-                  }}
-                >
-                  Sign up
-                </Link>
-              </p>
-
-            </form>
-          </div>
-        </main>
-      )}
+            </p>
+          </form>
+        </div>
+      </main>
 
       <Footer />
     </>

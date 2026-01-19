@@ -1,42 +1,37 @@
-import React, { Fragment, useState, useEffect } from "react";
-import "./stylesheets/UpdateProfile.css";
+import React, { useState, useEffect } from "react";
+import './stylesheets/UpdateProfile.css';
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import FaceIcon from "@material-ui/icons/Face";
+import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import { toast } from "react-toastify";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
-import AccessibilityIcon from "@mui/icons-material/Accessibility";
-
 import PageTitle from "../layout/PageTitle";
-
-import { updateProfile, loadUser } from "../../redux-toolkit/slices/user.slice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { updateProfile, loadUser } from "../../redux-toolkit/slices/user.slice";
 
 const UpdateProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, error, isUpdated } = useSelector((state) => state.userSlice);
+  const { user, error, isUpdated, isLoading } = useSelector((state) => state.userSlice);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("");
 
-  const updateProfileDataChange = (e) => {
+  const handleAvatarChange = (e) => {
     setAvatar(e.target.files[0]);
     const reader = new FileReader();
-
     reader.onload = () => {
-      if (reader.readyState === 2) {
-        setAvatarPreview(reader.result);
-      }
+      if (reader.readyState === 2) setAvatarPreview(reader.result);
     };
+    reader.readAsDataURL(e.target.files[0]);
   };
 
-  const updateProfileSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateProfile({ name, email, avatar }));
   };
@@ -48,91 +43,83 @@ const UpdateProfile = () => {
       setAvatar(user.avatar?.url);
     }
 
-    if (error) {
-      toast.error(error);
-    }
+    if (error) toast.error(error);
 
     if (isUpdated) {
-      toast.success("Profile Updated Successfully.");
+      toast.success("Profile Updated Successfully");
       dispatch(loadUser());
-
       navigate("/user/profile");
     }
-  }, [dispatch, error, user]);
+  }, [user, error, isUpdated, dispatch, navigate]);
 
   return (
     <>
-      <PageTitle title={"Ecommerce- Update Profile"} />
+      <PageTitle title="Ecommerce - Update Profile" />
       <Header />
 
       <main>
-        <div className="form">
-          <form
-            className="updateProfileForm"
-            encType="multipart/form-data"
-            onSubmit={updateProfileSubmit}
-          >
-            <h2>Update Profile</h2>
+        <div id="up-page-wrapper">
+          <div id="up-form-container">
+            <form id="up-profile-card" onSubmit={handleSubmit}>
+              <h2>Update Profile</h2>
 
-            <div className="input-group">
-              <span className="icon-wrapper">
-                <FaceIcon />
-              </span>
-              <input
-                type="text"
-                placeholder="Name"
-                required
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-
-            <div className="input-group">
-              <span className="icon-wrapper">
-                <MailOutlineIcon />
-              </span>
-              <input
-                type="email"
-                placeholder="Email"
-                required
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <div style={{ flexDirection: "column" }}>
-              <div>
-                <p style={{ marginBottom: "5px" }}>Original Image</p>
-                <img
-                  style={{ borderRadius: "5px" }}
-                  width={100}
-                  height={100}
-                  src={avatar}
-                  alt="Avatar"
-                />
+              {/* Avatar */}
+              <div id="up-avatar-section">
+                <div id="up-avatar-container">
+                  <img
+                    id="up-avatar-image"
+                    src={avatarPreview || avatar}
+                    alt="Profile"
+                  />
+                  <div id="up-avatar-badge">Photo</div>
+                </div>
               </div>
-              <p style={{ margin: "10px 0 2px" }}>Change Image</p>
 
-              <div className="input-group">
-                <span className="icon-wrapper">
+              {/* Name Input */}
+              <div id="up-input-group">
+                <div>
+                  <span><FaceIcon /></span>
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+
+                {/* Email Input */}
+                <div>
+                  <span><MailOutlineIcon /></span>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* File Upload */}
+              <div id="up-file-upload">
+                <label id="up-file-upload-label">
                   <AccessibilityIcon />
-                </span>
-                <input
-                  style={{ padding: "2px 10px" }}
-                  type="file"
-                  name="avatar"
-                  accept="image/*"
-                  onChange={updateProfileDataChange}
-                />
+                  <span>Change Profile Photo</span>
+                  <input type="file" accept="image/*" onChange={handleAvatarChange} style={{ display: 'none' }} />
+                </label>
               </div>
-            </div>
 
-            <Button onClick={updateProfileSubmit} variant="dark">
-              Update Profile
-            </Button>
-          </form>
+              {/* Submit Button */}
+              <button
+                id="up-submit-btn"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update Profile"}
+              </button>
+            </form>
+          </div>
         </div>
       </main>
 

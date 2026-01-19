@@ -3,7 +3,6 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Sidebar from "../layout/DashboardSidebar.jsx";
 import { useEffect } from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import Button from "react-bootstrap/esm/Button";
 import { useSelector, useDispatch } from "react-redux";
 import Pagination from "@mui/material/Pagination";
@@ -14,29 +13,33 @@ import {
   clearAdminState,
   updateUserRole,
 } from "../../redux-toolkit/slices/admin.slice.jsx";
-import Table from "react-bootstrap/esm/Table.js";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import axios from "axios";
 import PageTitle from "../layout/PageTitle";
-
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import "./stylesheets/AdminUsers.css";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
-    loading,
+    isLoading,
     users,
     totalUsersPages,
     userRoleUpdateSuccess,
     deleteUserSuccess,
+    isUpdating,
+    isDeleting,
+    totalUsers
   } = useSelector((state) => state.adminSlice);
 
   const [updateUserModalShow, setUpdateUserModalShow] = useState(false);
   const [user, setUser] = useState({});
-  console.log(totalUsersPages);
+
   const deleteUserHandler = (id) => {
     dispatch(deleteUser(id));
   };
@@ -44,27 +47,24 @@ const UsersList = () => {
   const showModal = async (id) => {
     try {
       const { data } = await axios.get(
-        "${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/user/" + id
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/user/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-
       setUser(data.user);
+      setUpdateUserModalShow(true);
     } catch (error) {
       toast.error(error.response?.data?.message);
     }
-
-    setUpdateUserModalShow(true);
   };
 
-  const updateUserRoleHandler = () => {
-    let id = user?._id;
-    let role = user?.role;
-
-    dispatch(updateUserRole({ id, role }));
+  const updateUserRoleHandler = (id, currentRole) => {
+    const newRole = currentRole === "admin" ? "user" : "admin";
+    dispatch(updateUserRole({ id, role: newRole }));
   };
+
 
   useEffect(() => {
     if (userRoleUpdateSuccess) {
-      clearAdminState();
+      dispatch(clearAdminState());
       setUpdateUserModalShow(false);
       toast.success("User role changed successfully");
     }
@@ -79,20 +79,34 @@ const UsersList = () => {
 
   return (
     <>
-      <PageTitle title={"Ecommerce- Admin Users"} />
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Header />
+      <PageTitle title={"Ecommerce - Admin Users"} />
+      <Header />
 
-          <main>
-            <div style={{ display: "flex" }}>
-              <Sidebar />
+      <main id="admin-users-main">
+        <div id="admin-users-layout">
+          <Sidebar />
 
-              <div className="content-wrapper">
-                <h4 style={{ textAlign: "center" }}>All Users</h4>
-                <Table style={{ width: "90%", margin: "auto" }} striped>
+          {isLoading ? <div style={{ width: "95%", margin: "2rem auto" }}>
+            <TableSkeleton />
+          </div> : <> {users && users.length ? (
+            <div id="admin-users-content">
+              {/* Page Header */}
+              <div id="admin-users-header">
+                <div>
+                  <h1>All Users</h1>
+                  <p>Manage user accounts and permissions</p>
+                </div>
+                <div id="users-stats">
+                  <div className="stat-badge">
+                    <span className="stat-label">Total Users</span>
+                    <span className="stat-value">{totalUsers}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Users Table */}
+              <div id="users-table-container">
+                <table id="users-table">
                   <thead>
                     <tr>
                       <th>Photo</th>
@@ -102,89 +116,134 @@ const UsersList = () => {
                       <th>Actions</th>
                     </tr>
                   </thead>
-                  {users && (
-                    <tbody>
-                      {users.map((user) => (
-                        <tr key={user._id}>
-                          <td>
-                            <img
-                              width={30}
-                              height={30}
-                              src={user.avatar?.url}
-                              alt=""
-                            />
-                          </td>
-                          <td>{user.name}</td>
-                          <td>{user.email}</td>
-                          <td>{user.role}</td>
-                          <td style={{ display: "flex" }}>
-                            <Button
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user._id}>
+                        <td>
+                          <img
+                            className="user-avatar"
+                            src={user.avatar?.url}
+                            alt={user.name}
+                          />
+                        </td>
+                        <td className="user-name">{user.name}</td>
+                        <td className="user-email">{user.email}</td>
+                        <td>
+                          <span className={`role-badge ${user.role}`}>
+                            {user.role}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="action-buttons">
+                            {/* <button
+                              className="btn-edit"
                               onClick={() => showModal(user._id)}
-                              style={{ padding: "2px", marginRight: "10px" }}
-                              size="sm"
-                              variant="danger"
+                              title="Edit User"
                             >
                               <EditIcon />
-                            </Button>
-                            <Button
+                            </button> */}
+                            <button
+                              className="btn-delete"
                               onClick={() => deleteUserHandler(user._id)}
-                              size="sm"
-                              variant="danger"
+                              title="Delete User"
+                              disabled={isDeleting}
+                              style={{
+                                opacity: isDeleting ? 0.5 : 1,
+                                cursor: isDeleting ? "not-allowed" : "pointer",
+                              }}
                             >
-                              Delete
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  )}
-                </Table>
+                              {isDeleting ? "Deleting..." : <DeleteIcon />}
+                            </button>
 
-                {/* pagination */}
-                {users && totalUsersPages > 1 && (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      padding: "2rem",
-                    }}
-                  >
-                    <Stack spacing={2}>
-                      <Pagination
-                        count={totalUsersPages}
-                        onChange={(e, page) => setCurrentPage(page)}
-                        color="primary"
-                      />
-                    </Stack>
-                  </div>
-                )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              {users && totalUsersPages > 1 && (
+                <div id="users-pagination">
+                  <Stack spacing={2}>
+                    <Pagination
+                      count={totalUsersPages}
+                      page={currentPage}
+                      onChange={(e, page) => setCurrentPage(page)}
+                      color="primary"
+                      size="large"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </Stack>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div id="no-users-container">
+              <div id="no-users-content">
+                <div className="no-users-icon">👥</div>
+                <h2>No Users Yet</h2>
+                <p>There are no users to display at the moment.</p>
               </div>
             </div>
-          </main>
+          )}</>}
 
-          <Modal
-            show={updateUserModalShow}
-            onHide={() => setUpdateUserModalShow(false)}
+        </div>
+      </main>
+
+      {/* Update Role Modal */}
+      <Modal
+        show={updateUserModalShow}
+        onHide={() => setUpdateUserModalShow(false)}
+        centered
+        className="user-role-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Update User Role</Modal.Title>
+        </Modal.Header>
+        <Modal.Body id="modal-body">
+          <div className="user-info">
+            <img src={user.avatar?.url} alt={user.name} className="modal-avatar" />
+            <div className="modal-user-details">
+              <h5>{user.name}</h5>
+              <p>{user.email}</p>
+            </div>
+          </div>
+          <div className="role-info">
+            <span className="role-label">Current Role:</span>
+            <span className={`role-badge ${user.role}`}>{user.role}</span>
+          </div>
+          <div className="role-toggle">
+            <span className="toggle-label">Switch to:</span>
+            <span className={`role-badge ${user.role === 'admin' ? 'user' : 'admin'}`}>
+              {user.role === 'admin' ? 'user' : 'admin'}
+            </span>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className="btn-cancel"
+            onClick={() => setUpdateUserModalShow(false)}
           >
-            <Modal.Body>
-              <big>
-                <b style={{ marginRight: "2rem" }}>User Role :</b>
-                <b>{user.role}</b>
-              </big>
-              <br /> <br />
-              <Button
-                size="sm"
-                onClick={() => updateUserRoleHandler()}
-                variant="primary"
-              >
-                Update User Role
-              </Button>
-            </Modal.Body>
-          </Modal>
-        </>
-      )}
+            Cancel
+          </button>
+          <button
+            className="btn-update-role"
+            onClick={() => updateUserRoleHandler(user._id, user.role)}
+            disabled={isUpdating}
+            style={{
+              opacity: isUpdating ? 0.5 : 1,
+              cursor: isUpdating ? "not-allowed" : "pointer",
+            }}
+          >
+            {isUpdating ? "Updating..." : "Update Role"}
+          </button>
 
-      {/* <Footer /> */}
+
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

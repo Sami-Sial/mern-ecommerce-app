@@ -6,14 +6,11 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import { toast } from "react-toastify";
 import Sidebar from "../layout/DashboardSidebar";
-import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
-
 import PageTitle from "../layout/PageTitle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAdminProducts,
@@ -21,15 +18,26 @@ import {
   clearAdminState,
 } from "../../redux-toolkit/slices/admin.slice";
 import axios from "axios";
+import "./stylesheets/AdminProducts.css";
+import TableSkeleton from "../skeletons/TableSkeleton";
 
 const ProductList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(currentPage);
 
-  const { error, products, productDeleteSuccess, totalAdminProdutsPages } =
-    useSelector((state) => state.adminSlice);
+  // ✅ NEW STATE (only addition)
+  const [featuredLoadingId, setFeaturedLoadingId] = useState(null);
+
+  const {
+    error,
+    products,
+    productDeleteSuccess,
+    totalAdminProdutsPages,
+    totalProducts,
+    isLoading,
+    isDeleting,
+  } = useSelector((state) => state.adminSlice);
 
   const deleteProductHandler = (id) => {
     dispatch(deleteProduct(id));
@@ -37,27 +45,35 @@ const ProductList = () => {
 
   const addProductToFeatured = async (id) => {
     try {
-      const { data } = await axios.put("/api/v1/product/featured/" + id);
-      toast.success("Product added to featured products list");
-      console.log(data);
+      setFeaturedLoadingId(id);
 
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/product/featured/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+
+      toast.success("Product added to featured products list");
       dispatch(getAdminProducts(currentPage));
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setFeaturedLoadingId(null);
     }
   };
 
   const removeProductFromFeatured = async (id) => {
     try {
-      const { data } = await axios.put("/api/v1/product/featured/remove/" + id);
-      toast.success("Product removed from featured products list");
-      console.log(data);
+      setFeaturedLoadingId(id);
 
-      dispatch(getAdminProducts());
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/product/featured/remove/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+
+      toast.success("Product removed from featured products list");
+      dispatch(getAdminProducts(currentPage));
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setFeaturedLoadingId(null);
     }
   };
 
@@ -76,124 +92,187 @@ const ProductList = () => {
 
   return (
     <>
-      <PageTitle title={"Ecommerce-Admin Products List"} />
-
+      <PageTitle title={"Ecommerce - Admin Products List"} />
       <Header />
 
-      <main>
-        <div style={{ display: "flex" }}>
+      <main id="admin-products-main">
+        <div id="admin-products-layout">
           <Sidebar />
 
-          <div className="content-wrapper">
-            <h4 style={{ textAlign: "center" }}>All Products</h4>
-            <Table style={{ width: "90%", margin: "auto" }} striped>
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Stock</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
-                  {/* <th>View Details</th> */}
-                  <th>Featured</th>
-                </tr>
-              </thead>
-              {products && (
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id}>
-                      <td>
-                        <img
-                          width={30}
-                          height={30}
-                          src={product.images[0]?.url}
-                          alt=""
-                        />
-                      </td>
-                      <td>{product.name}</td>
-                      <td>&#x24;{product.price}</td>
-                      <td>{product.stock}</td>
-                      <td>{product.createdAt.slice(0, 10)}</td>
-                      <td style={{ display: "flex" }}>
-                        <Button
-                          style={{ padding: "2px", marginRight: "10px" }}
-                          size="sm"
-                          variant="danger"
-                        >
-                          <EditIcon
-                            onClick={() =>
-                              navigate(`/admin/edit_product/${product._id}`)
-                            }
-                          />
-                        </Button>
-                        <Button
-                          style={{ padding: "2px" }}
-                          onClick={() => deleteProductHandler(product._id)}
-                          size="sm"
-                          variant="danger"
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </td>
-                      {/* <td>
-                        <Button
-                          onClick={() => navigate(`/product/${product._id}`)}
-                          size="sm"
-                          variant="secondary"
-                        >
-                          View Details
-                        </Button>
-                      </td> */}
-                      <td>
-                        {product.featured ? (
-                          <>
-                            <EditIcon
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                removeProductFromFeatured(product._id)
-                              }
-                            />
-                            <CheckCircleIcon />
-                          </>
-                        ) : (
-                          <Button
-                            size="sm"
-                            onClick={() => addProductToFeatured(product._id)}
-                          >
-                            Add
-                          </Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              )}
-            </Table>
-
-            {/* pagination */}
-            {products && (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  padding: "2rem",
-                }}
-              >
-                <Stack spacing={2}>
-                  <Pagination
-                    count={totalAdminProdutsPages}
-                    onChange={(e, page) => setCurrentPage(page)}
-                    color="primary"
-                  />
-                </Stack>
+          {isLoading ? (
+            <div style={{ width: "95%", margin: "2rem auto" }}>
+              <TableSkeleton />
+            </div>
+          ) : products && products.length ? (
+            <div id="admin-products-content">
+              <div id="admin-products-header">
+                <div>
+                  <h1>All Products</h1>
+                  <p>Manage your product inventory</p>
+                </div>
+                <div id="products-stats">
+                  <div className="stat-badge">
+                    <span className="stat-label">Total Products</span>
+                    <span className="stat-value">{totalProducts}</span>
+                  </div>
+                </div>
               </div>
-            )}
-          </div>
+
+              <div id="products-table-container">
+                <table id="products-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Stock</th>
+                      <th>Created At</th>
+                      <th>Actions</th>
+                      <th>Featured</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product) => (
+                      <tr key={product._id}>
+                        <td>
+                          <img
+                            className="product-image"
+                            src={product.images[0]?.url}
+                            alt={product.name}
+                          />
+                        </td>
+
+                        <td className="product-name">{product.name}</td>
+                        <td className="product-price">${product.price}</td>
+
+                        <td>
+                          <span
+                            className={`stock-badge ${product.stock > 0 ? "in-stock" : "out-stock"
+                              }`}
+                          >
+                            {product.stock}
+                          </span>
+                        </td>
+
+                        <td className="product-date">
+                          {new Date(product.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
+                        </td>
+
+                        <td>
+                          <div className="action-buttons">
+                            <button
+                              className="btn-edit"
+                              onClick={() =>
+                                navigate(
+                                  `/admin/edit_product/${product._id}`
+                                )
+                              }
+                              title="Edit Product"
+                            >
+                              <EditIcon />
+                            </button>
+
+                            <button
+                              className="btn-delete"
+                              onClick={() => deleteProductHandler(product._id)}
+                              title="Delete Product"
+                              disabled={isDeleting}
+                              style={{
+                                opacity: isDeleting ? 0.5 : 1,
+                                cursor: isDeleting ? "not-allowed" : "pointer",
+                              }}
+                            >
+                              {isDeleting ? "Deleting..." : <DeleteIcon />}
+                            </button>
+
+
+                          </div>
+                        </td>
+
+                        <td>
+                          {product.featured ? (
+                            <div className="featured-actions">
+                              <button
+                                className="btn-remove-featured"
+                                style={{
+                                  opacity: featuredLoadingId === product._id ? 0.5 : 1,
+                                  cursor: featuredLoadingId === product._id ? "not-allowed" : "pointer",
+                                }}
+                                disabled={
+                                  featuredLoadingId === product._id
+                                }
+                                onClick={() =>
+                                  removeProductFromFeatured(product._id)
+                                }
+                                title="Remove from Featured"
+                              >
+                                {featuredLoadingId === product._id
+                                  ? "Removing..."
+                                  : <EditIcon />}
+                              </button>
+
+                              <CheckCircleIcon className="featured-check" />
+                            </div>
+                          ) : (
+                            <button
+                              className="btn-add-featured"
+                              style={{
+                                opacity: featuredLoadingId === product._id ? 0.5 : 1,
+                                cursor: featuredLoadingId === product._id ? "not-allowed" : "pointer",
+                              }}
+                              disabled={
+                                featuredLoadingId === product._id
+                              }
+                              onClick={() =>
+                                addProductToFeatured(product._id)
+                              }
+                            >
+                              {featuredLoadingId === product._id
+                                ? "Adding..."
+                                : "Add"}
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {products && totalAdminProdutsPages > 1 && (
+                <div id="products-pagination">
+                  <Stack spacing={2}>
+                    <Pagination
+                      count={totalAdminProdutsPages}
+                      page={currentPage}
+                      onChange={(e, page) => setCurrentPage(page)}
+                      color="primary"
+                      size="large"
+                      showFirstButton
+                      showLastButton
+                    />
+                  </Stack>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div id="no-products-container">
+              <div id="no-products-content">
+                <div className="no-products-icon">📦</div>
+                <h2>No Products Yet</h2>
+                <p>There are no products to display at the moment.</p>
+              </div>
+            </div>
+          )}
         </div>
       </main>
-
-      {/* <Footer /> */}
     </>
   );
 };

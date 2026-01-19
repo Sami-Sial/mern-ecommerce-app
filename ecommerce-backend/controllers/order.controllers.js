@@ -67,24 +67,32 @@ module.exports.myOrders = AsyncErrorHandler(async (req, res, next) => {
 module.exports.getAllOrders = AsyncErrorHandler(async (req, res, next) => {
   const { currentPage } = req.query;
 
-  if (currentPage == "undefined") {
-    let orders = await Order.find();
-    res.status(200).json({ success: true, orders });
+  // If currentPage is not provided, return all orders
+  if (currentPage === "undefined" || !currentPage) {
+    const orders = await Order.find().populate("user", "name email");
+    const totalOrders = orders.length; // total count
+    let totalAmount = 0;
+    orders.forEach((order) => (totalAmount += order.totalPrice));
+
+    res.status(200).json({
+      success: true,
+      totalAmount,
+      totalOrders,
+      orders,
+    });
     return;
   }
 
   const resultPerPage = 7;
-  const skip = resultPerPage * (currentPage - 1);
+  const page = Number(currentPage) || 1;
+  const skip = resultPerPage * (page - 1);
 
   const totalOrders = await Order.countDocuments();
   const totalOrdersPages = Math.ceil(totalOrders / resultPerPage);
-  console.log(currentPage);
-  console.log(skip);
 
-  let orders = await Order.find().skip(skip).limit(resultPerPage);
+  let orders = await Order.find().skip(skip).limit(resultPerPage).populate("user", "name email");
 
   let totalAmount = 0;
-
   orders.forEach((order) => {
     totalAmount += order.totalPrice;
   });
@@ -93,24 +101,8 @@ module.exports.getAllOrders = AsyncErrorHandler(async (req, res, next) => {
     success: true,
     totalAmount,
     orders,
+    totalOrders,
     totalOrdersPages,
-  });
-});
-
-// Get all Orders => Admin
-module.exports.getAllOrders = AsyncErrorHandler(async (req, res, next) => {
-  const orders = await Order.find();
-
-  let totalAmount = 0;
-
-  orders.forEach((order) => {
-    totalAmount += order.totalPrice;
-  });
-
-  res.status(200).json({
-    success: true,
-    totalAmount,
-    orders,
   });
 });
 

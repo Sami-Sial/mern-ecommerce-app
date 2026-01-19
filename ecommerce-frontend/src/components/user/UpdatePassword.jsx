@@ -14,14 +14,13 @@ import {
 } from "../../redux-toolkit/slices/user.slice";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-
 import PageTitle from "../layout/PageTitle";
 
 const UpdatePassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { error, passwordUpdateSuccess, loading } = useSelector(
+  const { error, passwordUpdateSuccess, isLoading } = useSelector(
     (state) => state.userSlice
   );
 
@@ -52,64 +51,82 @@ const UpdatePassword = () => {
 
     if (passwordUpdateSuccess) {
       dispatch(clearUserState());
-      toast.success("Profile Updated Successfully");
+      toast.success("Password Updated Successfully");
       navigate("/user/profile");
     }
-  }, [dispatch, error, passwordUpdateSuccess]);
+  }, [dispatch, error, passwordUpdateSuccess, navigate]);
 
   return (
     <>
-      <PageTitle title={"Ecommrece - Update Profile"} />
+      <PageTitle title={"Ecommerce - Update Password"} />
       <Header />
 
       <main>
-        <div className="form">
-          <form onSubmit={updatePasswordSubmit}>
-            <h2>Update Profile</h2>
+        <div className="wrapper">
+          <div className="form">
+            <div className="updatePasswordForm">
+              <h2>Update Password</h2>
 
-            <div className="input-group">
-              <span className="icon-wrapper">
-                <VpnKeyIcon />
-              </span>
-              <input
-                type="password"
-                placeholder="Old Password"
-                required
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-              />
+              {/* Old Password Input */}
+              <div className="input-group">
+                <span className="icon-wrapper">
+                  <VpnKeyIcon style={{ fontSize: '1.3rem' }} />
+                </span>
+                <input
+                  type="password"
+                  placeholder="Enter old password"
+                  required
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className="password-input"
+                />
+              </div>
+
+              {/* New Password Input */}
+              <div className="input-group">
+                <span className="icon-wrapper">
+                  <LockOpenIcon style={{ fontSize: '1.3rem' }} />
+                </span>
+                <input
+                  type="password"
+                  placeholder="Enter new password"
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="password-input"
+                />
+              </div>
+
+              {/* Confirm Password Input */}
+              <div className="input-group">
+                <span className="icon-wrapper">
+                  <LockIcon style={{ fontSize: '1.3rem' }} />
+                </span>
+                <input
+                  type="password"
+                  placeholder="Confirm new password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="password-input"
+                />
+              </div>
+
+              {/* Password Requirements */}
+              <div className="password-hint">
+                <p>Password must be at least 8 characters long</p>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                onClick={updatePasswordSubmit}
+                className="form-btn"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Updating...' : 'Update Password'}
+              </button>
             </div>
-
-            <div className="input-group">
-              <span className="icon-wrapper">
-                <LockOpenIcon />
-              </span>
-              <input
-                type="password"
-                placeholder="New Password"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="input-group">
-              <span className="icon-wrapper">
-                <LockIcon />
-              </span>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-
-            <Button type="submit" style={{ marginTop: "1rem" }} variant="dark">
-              Update
-            </Button>
-          </form>
+          </div>
         </div>
       </main>
 

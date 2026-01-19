@@ -1,45 +1,374 @@
-/* .form {
-    display: flex;
-    flex-direction: column; 
-    / align-items: center;
-} */
+/* ========== UPDATE PRODUCT PAGE STYLES ========== */
 
-/* .form form {
+.dashboard-layout {
     display: flex;
-    gap: 10px;
-    flex-direction: column;
-    width: 350px;
-    border-radius: 5px;
-    border: 2px solid #131921;
-} */
+    width: 100%;
+    min-height: calc(100vh - 80px);
+}
 
-.input-group {
+/* Sidebar fixed width */
+.dashboard-layout aside,
+.dashboard-layout .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+}
+
+/* Content area takes remaining width */
+.content-wrapper {
+    flex: 1;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.icon-wrapper {
-    padding: 4px;
-    border: 2px solid #37475a;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-right: none;
+
+/* Page Wrapper */
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    background: #f8f9fa;
+    padding: 2rem 1rem;
 }
 
-select, textarea, input {
-    width: 88.5%;
-    padding: 5px 10px;
-    border: 2px solid #37475a;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.form-btn {
-    background-color: #37475a;
-    border-radius: 25px;
-    padding: 7px;
-    color: white;
-    cursor: pointer;
+/* Form Card */
+.form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+    width: 100%;
+    max-width: 550px;
+    background: #ffffff;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     border: none;
-    margin-top: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.form form:hover {
+    box-shadow: 0 4px 28px rgba(0, 0, 0, 0.14);
+}
+
+/* Form Title */
+.form form h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.form form h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6347, #ff8c00);
+    border-radius: 2px;
+}
+
+/* Input Groups */
+.input-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.input-group:focus-within {
+    transform: translateX(2px);
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem;
+    background: #2c3845;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border: none;
+    min-width: 42px;
+    transition: background 0.3s ease;
+}
+
+.input-group:focus-within .icon-wrapper {
+    background: #ff6347;
+}
+
+.icon-wrapper svg {
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+
+/* Input Fields */
+.input-group input,
+.input-group textarea,
+.input-group select {
+    flex: 1;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9375rem;
+    border: 2px solid #e5e5e5;
+    border-left: none;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #333;
+    font-family: inherit;
+}
+
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+    border-color: #ff6347;
+    background: #ffffff;
+}
+
+.input-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.input-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff6347' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.input-group input:focus-visible,
+.input-group textarea:focus-visible,
+.input-group select:focus-visible {
+    outline: none;
+}
+
+/* File Input */
+.input-group input[type="file"] {
+    border: 2px dashed #e5e5e5;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 0.9rem;
+    background: #fafafa;
+}
+
+.input-group input[type="file"]:hover {
+    border-color: #ff6347;
+    background: #fff;
+}
+
+.input-group input[type="file"]::file-selector-button {
+    background: linear-gradient(135deg, #ff6347 0%, #ff4500 100%);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-group input[type="file"]::file-selector-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+}
+
+/* Old Images Preview */
+#createProductFormImage {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 2px solid #e5e5e5;
+}
+
+#createProductFormImage p {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #666;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 100%;
+}
+
+#createProductFormImage img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid #e5e5e5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+#createProductFormImage img:hover {
+    transform: scale(1.05);
+    border-color: #ff6347;
+}
+
+/* Submit Button */
+.form form button[type="submit"],
+.form form .btn,
+.form-btn {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ff6347 0%, #ff4500 100%);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 12px rgba(255, 99, 71, 0.25);
+    margin-top: 0.5rem;
+}
+
+.form form button[type="submit"]:hover,
+.form form .btn:hover,
+.form-btn:hover {
+    background: linear-gradient(135deg, #ff4500 0%, #e63900 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(255, 99, 71, 0.35);
+}
+
+.form form button[type="submit"]:active,
+.form form .btn:active,
+.form-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 99, 71, 0.25);
+}
+
+/* Loading/Disabled State */
+.form form button[type="submit"]:disabled,
+.form form .btn:disabled,
+.form-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Focus Visible for Accessibility */
+.form form button[type="submit"]:focus-visible,
+.form form .btn:focus-visible,
+.form-btn:focus-visible {
+    outline: 2px solid #ff6347;
+    outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .form {
+        padding: 1.5rem 0.75rem;
+    }
+
+    .form form {
+        padding: 2rem 1.75rem;
+        max-width: 100%;
+    }
+
+    .form form h1 {
+        font-size: 1.75rem;
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .icon-wrapper {
+        padding: 0.5rem;
+        min-width: 38px;
+    }
+
+    .icon-wrapper svg {
+        font-size: 1.125rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .form {
+        padding: 1rem 0.5rem;
+    }
+
+    .form form {
+        padding: 1.5rem;
+        border-radius: 12px;
+        gap: 1rem;
+    }
+
+    .form form h1 {
+        font-size: 1.5rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .icon-wrapper {
+        padding: 0.5rem;
+        min-width: 38px;
+    }
+
+    .icon-wrapper svg {
+        font-size: 1rem;
+    }
+
+    .form form button[type="submit"],
+    .form form .btn,
+    .form-btn {
+        font-size: 0.9375rem;
+        padding: 0.625rem 1.25rem;
+    }
+
+    #createProductFormImage img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .form form p {
+        font-size: 0.85rem;
+    }
 }

@@ -3,7 +3,6 @@ import "./stylesheets/Sidebar.css";
 import { Link, useLocation } from "react-router-dom";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
@@ -23,64 +22,50 @@ const Sidebar = () => {
   return (
     <>
       <div className="sidebar">
+        {/* ADMIN ONLY SECTIONS */}
         {user?.role === "admin" && (
           <>
+            {/* Dashboard */}
             <div
-              className={`sidebar-option ${
-                isActive("/admin/dashboard") ? "active" : ""
-              }`}
+              className={`sidebar-option ${isActive("/admin/dashboard") ? "active" : ""
+                }`}
             >
               <DashboardIcon />
               <Link className="link" to={"/admin/dashboard"}>
                 Dashboard
               </Link>
             </div>
-            <div className="sidebar-divider"></div>
-          </>
-        )}
 
-        <div
-          className={`sidebar-option ${
-            isActive(
-              user?.role === "admin" ? "/admin/profile" : "/user/profile"
-            )
-              ? "active"
-              : ""
-          }`}
-        >
-          <AccountBoxIcon />
-          <Link
-            className="link"
-            to={user?.role === "user" ? "/user/profile" : "/admin/profile"}
-          >
-            Profile
-          </Link>
-        </div>
-
-        <div
-          className={`sidebar-option ${
-            isActive(user?.role === "admin" ? "/admin/orders" : "/user/orders")
-              ? "active"
-              : ""
-          }`}
-        >
-          <ListAltIcon />
-          <Link
-            className="link"
-            to={user?.role === "user" ? "/user/orders" : "/admin/orders"}
-          >
-            Orders
-          </Link>
-        </div>
-
-        {user?.role === "admin" && (
-          <>
             <div className="sidebar-divider"></div>
 
+            {/* Profile */}
             <div
-              className={`sidebar-option ${
-                isActive("/admin/products") ? "active" : ""
-              }`}
+              className={`sidebar-option ${isActive("/admin/profile") ? "active" : ""
+                }`}
+            >
+              <AccountBoxIcon />
+              <Link className="link" to={"/admin/profile"}>
+                Profile
+              </Link>
+            </div>
+
+            {/* Orders */}
+            <div
+              className={`sidebar-option ${isActive("/admin/orders") ? "active" : ""
+                }`}
+            >
+              <ListAltIcon />
+              <Link className="link" to={"/admin/orders"}>
+                Orders
+              </Link>
+            </div>
+
+            <div className="sidebar-divider"></div>
+
+            {/* Products */}
+            <div
+              className={`sidebar-option ${isActive("/admin/products") ? "active" : ""
+                }`}
             >
               <InventoryIcon />
               <Link className="link" to={"/admin/products"}>
@@ -88,10 +73,10 @@ const Sidebar = () => {
               </Link>
             </div>
 
+            {/* Create Product */}
             <div
-              className={`sidebar-option ${
-                isActive("/admin/product/create") ? "active" : ""
-              }`}
+              className={`sidebar-option ${isActive("/admin/product/create") ? "active" : ""
+                }`}
             >
               <AddBoxIcon />
               <Link className="link" to={"/admin/product/create"}>
@@ -99,10 +84,10 @@ const Sidebar = () => {
               </Link>
             </div>
 
+            {/* Users */}
             <div
-              className={`sidebar-option ${
-                isActive("/admin/users") ? "active" : ""
-              }`}
+              className={`sidebar-option ${isActive("/admin/users") ? "active" : ""
+                }`}
             >
               <PeopleIcon />
               <Link className="link" to={"/admin/users"}>
@@ -112,14 +97,37 @@ const Sidebar = () => {
           </>
         )}
 
+        {/* USER ONLY SECTIONS */}
         {user?.role === "user" && (
           <>
+            {/* Profile */}
+            <div
+              className={`sidebar-option ${isActive("/user/profile") ? "active" : ""
+                }`}
+            >
+              <AccountBoxIcon />
+              <Link className="link" to={"/user/profile"}>
+                Profile
+              </Link>
+            </div>
+
+            {/* Orders */}
+            <div
+              className={`sidebar-option ${isActive("/user/orders") ? "active" : ""
+                }`}
+            >
+              <ListAltIcon />
+              <Link className="link" to={"/user/orders"}>
+                Orders
+              </Link>
+            </div>
+
             <div className="sidebar-divider"></div>
 
+            {/* Cart */}
             <div
-              className={`sidebar-option ${
-                isActive("/user/cart") ? "active" : ""
-              }`}
+              className={`sidebar-option ${isActive("/user/cart") ? "active" : ""
+                }`}
             >
               <ShoppingCartIcon />
               <Link className="link" to="/user/cart">

@@ -1,23 +1,28 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Login from "../user/Login";
-import { toast } from "react-toastify";
 import { Navigate } from "react-router-dom";
+import SessionLoader from "../layout/SessionLoader";
 
-const ProtectUserRoute = (props) => {
-  const { user } = useSelector((state) => state.userSlice);
+const ProtectUserRoute = ({ children }) => {
+  const { user, isLoading, isAuthenticated } = useSelector((state) => state.userSlice);
+  console.log(isLoading);
+  //  Auth resolving
+  if (isAuthenticated === null) {
+    return <SessionLoader />;
+  }
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     toast.error("Please login to this resource");
-  //   }
-  // }, [user]);
+  //  Not logged in
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-  return user && user.role === "user" ? (
-    <>{props.children}</>
-  ) : (
-    <Navigate to={"/login"} />
-  );
+  // Wrong role
+  if (user.role !== "user") {
+    return <Navigate to="/login" replace />;
+  }
+
+  // ✅ Authorized
+  return children;
 };
 
 export default ProtectUserRoute;

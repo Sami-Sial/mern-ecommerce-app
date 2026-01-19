@@ -23,7 +23,7 @@ const ProcessOrder = () => {
   const dispatch = useDispatch();
   const [orderStatus, setOrderStatus] = useState("Processing");
 
-  const { error, orderProcessSuccess } = useSelector(
+  const { error, orderProcessSuccess, isLoading } = useSelector(
     (state) => state.adminSlice
   );
   const { order } = useSelector((state) => state.orderSlice);
@@ -60,20 +60,13 @@ const ProcessOrder = () => {
         <div style={{ display: "flex" }}>
           <Sidebar />
 
-          <div
-            className="content-wrapper"
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-            }}
-          >
+          <div className="content-wrapper">
             {order && (
               <>
                 <div>
+                  {/* ORDER ITEMS TABLE */}
                   <div>
-                    <h5 style={{ fontWeight: "bold", margin: "1rem 0 0" }}>
-                      Order Items
-                    </h5>
+                    <h5>Order Items</h5>
 
                     <Table striped>
                       <thead>
@@ -81,7 +74,7 @@ const ProcessOrder = () => {
                           <th>Image</th>
                           <th>Product Name</th>
                           <th>Price</th>
-                          <th>Quantity</th>
+                          <th>Qty</th>
                           <th>Subtotal</th>
                         </tr>
                       </thead>
@@ -92,17 +85,14 @@ const ProcessOrder = () => {
                               <img
                                 width={30}
                                 height={30}
-                                style={{ borderRadius: "5px" }}
                                 src={item.images[0].url}
-                                alt=""
+                                alt={item.name}
                               />
                             </td>
                             <td>{item.name}</td>
-                            <td>&#x24;{Math.round(item.price)}</td>
+                            <td>${Math.round(item.price)}</td>
                             <td>{item.quantity}</td>
-                            <td>
-                              &#x24;{Math.round(item.price * item.quantity)}
-                            </td>
+                            <td>${Math.round(item.price * item.quantity)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -112,14 +102,15 @@ const ProcessOrder = () => {
                           <th></th>
                           <th></th>
                           <th></th>
-                          <th>&#x24;{Math.round(order.totalPrice)}</th>
+                          <th>${Math.round(order.totalPrice)}</th>
                         </tr>
                       </tfoot>
                     </Table>
                   </div>
 
+                  {/* PAYMENT INFO TABLE */}
                   <div>
-                    <h5 style={{ fontWeight: "bold" }}>Payment</h5>
+                    <h5>Payment Information</h5>
                     <Table striped>
                       <thead>
                         <tr>
@@ -130,7 +121,7 @@ const ProcessOrder = () => {
 
                       <tbody>
                         <tr>
-                          <td>&#x24;{Math.round(order.totalPrice)}</td>
+                          <td>${Math.round(order.totalPrice)}</td>
                           <td style={{ color: "green" }}>
                             {order.paymentInfo?.status}
                           </td>
@@ -140,84 +131,43 @@ const ProcessOrder = () => {
                   </div>
                 </div>
 
-                <div
-                  id="right"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    padding: "1rem",
-                    gap: "1rem",
-                  }}
-                >
+                {/* RIGHT SIDEBAR */}
+                <div id="right">
+                  {/* SHIPPING ADDRESS */}
                   <div>
-                    <h5 style={{ fontWeight: "bold" }}>Order Address</h5>
-                    <p>Name : {order.user?.name}</p>
-                    <p style={{ margin: "0" }}>
-                      Address : {""}
-                      {order.shippingInfo?.address +
-                        "," +
-                        order.shippingInfo?.city +
-                        "," +
-                        order.shippingInfo?.state +
-                        "," +
-                        order.shippingInfo?.country}
+                    <h5>Shipping Address</h5>
+                    <p><strong>Name:</strong> {order.user?.name}</p>
+                    <p>
+                      <strong>Address:</strong>{" "}
+                      {order.shippingInfo?.address}, {order.shippingInfo?.city},{" "}
+                      {order.shippingInfo?.state}, {order.shippingInfo?.country}
                     </p>
-                    <p>Pin Code : {order.shippingInfo?.pinCode}</p>
-                    <p style={{ margin: "0" }}>
-                      Phone No: {order.shippingInfo?.phoneNo}
-                    </p>
+                    <p><strong>Pin Code:</strong> {order.shippingInfo?.pinCode}</p>
+                    <p><strong>Phone:</strong> {order.shippingInfo?.phoneNo}</p>
                   </div>
 
+                  {/* PROCESS ORDER */}
                   <div>
                     <h4>Process Order</h4>
                     <div>
-                      <p style={{ marginBottom: "10px 0" }}>
-                        <p>
-                          Order Status :
-                          <span style={{ color: "red" }}>
-                            {" " + order.orderStatus}
-                          </span>
-                        </p>
+                      <p>
+                        Order Status:
+                        <span> {order.orderStatus}</span>
                       </p>
-                      {/* <label htmlFor="" style={{ marginBottom: "5px" }}>
-                        Update Status
-                      </label>{" "}
-                      <br />
-                      <select
-                        value={orderStatus}
-                        onChange={(e) => setOrderStatus(e.target.value)}
-                        id=""
-                        style={{
-                          width: "150px",
-                          padding: "2px",
-                          borderRadius: "5px",
-                          border: "2px solid green",
-                        }}
-                      >
-                        <option value="Processing">Processing</option>
-                        <option value="Delivered">Delivered</option>
-                      </select> */}
 
-                      {order?.orderStatus == "Processing" ? (
+                      {order?.orderStatus === "Processing" ? (
                         <Button
                           onClick={updateOrderStatus}
-                          style={{
-                            marginTop: "2rem",
-                          }}
                           size="sm"
-                          variant="success"
+                          disabled={isLoading} // disable while loading
                         >
-                          Deliver Order
+                          {isLoading ? "Processing..." : "Deliver Order"}
                         </Button>
+
                       ) : (
                         <div>
-                          <p style={{ color: "green", fontSize: "20px" }}>
-                            Order is already delivered
-                          </p>
-                          <p>
-                            Delivery Date : {order?.deliveredAt?.slice(0, 10)}
-                          </p>
+                          <p>✓ Order Delivered Successfully</p>
+                          <p>Delivery Date: {order?.deliveredAt?.slice(0, 10)}</p>
                         </div>
                       )}
                     </div>

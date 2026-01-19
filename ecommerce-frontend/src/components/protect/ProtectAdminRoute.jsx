@@ -1,22 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import SessionLoader from "../layout/SessionLoader";
 
-const ProtectAdminRoute = (props) => {
-  const { user } = useSelector((state) => state.userSlice);
+const ProtectAdminRoute = ({ children }) => {
+  const { user, isLoading, isAuthenticated } = useSelector((state) => state.userSlice);
+  console.log(isLoading);
+  //  Auth resolving
+  if (isAuthenticated === null) {
+    return <SessionLoader />;
+  }
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     toast.error("Please login to this resource");
-  //   }
-  // }, []);
+  //  Not logged in
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-  return user && user.role === "admin" ? (
-    <>{props.children}</>
-  ) : (
-    <Navigate to={"/login"} />
-  );
+  // Wrong role
+  if (user.role !== "admin") {
+    return <Navigate to="/login" replace />;
+  }
+
+  // ✅ Authorized
+  return children;
 };
 
 export default ProtectAdminRoute;

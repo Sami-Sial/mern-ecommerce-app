@@ -1,55 +1,191 @@
+.shippingContainer {
+    min-height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
 .form {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 500px;
 }
 
-.form form {
+.shippingHeading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #131921;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.shippingHeading::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9900, #ff6b00);
+    border-radius: 2px;
+}
+
+.shippingForm {
     display: flex;
-    gap: 10px;
+    gap: 1.25rem;
     flex-direction: column;
-    width: 350px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 2px solid #131921;
+    width: 100%;
+    padding: 2.5rem;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shippingForm:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
 }
 
 .input-group {
     display: flex;
     align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+    transform: scale(1.02);
 }
 
 .icon-wrapper {
-    padding: 4px;
-    border: 2px solid #37475a;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-right: none;
-}
-
-.input-group input {
-    width: 88.5%;
-    padding: 5px 10px;
-    border: 2px solid #37475a;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-select {
-    width: 88.5%;
-        padding: 5px 10px;
-        border: 2px solid #37475a;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-}
-
-.form-btn {
-    background-color: #37475a;
-    border-radius: 25px;
-    padding: 7px;
+    padding: 12px;
+    background: linear-gradient(135deg, #37475a 0%, #2c3845 100%);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within .icon-wrapper {
+    background: linear-gradient(135deg, #ff9900 0%, #ff6b00 100%);
+    transform: scale(1.05);
+}
+
+.input-group input,
+.input-group select {
+    flex: 1;
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-left: none;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #333;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #ff9900;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+}
+
+.input-group input::placeholder {
+    color: #999;
+    font-size: 0.95rem;
+}
+
+/* Remove spinner arrows from number inputs */
+.input-group input[type="number"]::-webkit-inner-spin-button,
+.input-group input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-group input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.shippingForm button {
+    margin-top: 1rem;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #ff9900 0%, #ff6b00 100%);
+    color: white;
     border: none;
-    margin-top: 10px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.shippingForm button:hover {
+    background: linear-gradient(135deg, #ff6b00 0%, #ff4500 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 153, 0, 0.4);
+}
+
+.shippingForm button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 153, 0, 0.3);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .shippingContainer {
+        padding: 1rem 0.5rem;
+    }
+
+    .shippingForm {
+        padding: 1.5rem;
+    }
+
+    .shippingHeading {
+        font-size: 1.5rem;
+    }
+
+    .form {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .shippingForm {
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+
+    .icon-wrapper {
+        padding: 10px;
+    }
+
+    .input-group input,
+    .input-group select {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .shippingForm button {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
 }

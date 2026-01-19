@@ -7,11 +7,11 @@ const app = express();
 const cors = require("cors");
 const axios = require("axios");
 const User = require("./models/user.model");
-
 // Data Parsing
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
+    credentials: true,
   })
 );
 app.use(cookieParser());
@@ -36,6 +36,7 @@ const connectDB = async () => {
     console.log("Successfully connected to Mongo DB");
   } catch (error) {
     console.log("Mongo DB Connection Failed... " + error.message);
+    process.exit(1);
   }
 };
 connectDB();

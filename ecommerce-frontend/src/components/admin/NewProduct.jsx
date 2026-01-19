@@ -25,7 +25,7 @@ const NewProdcut = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, createProductSuccess } = useSelector(
+  const { loading, error, createProductSuccess, isLoading } = useSelector(
     (state) => state.adminSlice
   );
 
@@ -72,133 +72,124 @@ const NewProdcut = () => {
     <>
       <PageTitle title={"Ecommerce-Admin Craete PRoduct"} />
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Header />
 
-          <main>
-            <div style={{ display: "flex" }}>
-              <SideBar />
+      <>
+        <Header />
 
-              <div
-                style={{
-                  width: "calc(100vw - 200px)",
-                  padding: "10px",
-                  maxHeight: "fit-content",
-                }}
-                className="form content-wrapper"
+        <main>
+          <div style={{ display: "flex" }}>
+            <SideBar />
+
+            <div className="form content-wrapper">
+              <form
+                encType="multipart/form-data"
+                onSubmit={createProductSubmitHandler}
               >
-                <form
-                  encType="multipart/form-data"
-                  onSubmit={createProductSubmitHandler}
+                <h1>Create Product</h1>
+
+                <div className="input-group">
+                  <span className="icon-wrapper">
+                    <SpellcheckIcon />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    required
+                    value={name}
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+
+                <div className="input-group">
+                  <span className="icon-wrapper">
+                    <AttachMoneyIcon />
+                  </span>
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    name="price"
+                    value={price}
+                    required
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+
+                <div className="input-group">
+                  <span className="icon-wrapper">
+                    <DescriptionIcon />
+                  </span>
+
+                  <textarea
+                    placeholder="Product Description"
+                    value={description}
+                    name="description"
+                    onChange={(e) => setDescription(e.target.value)}
+                    cols="30"
+                    rows="1"
+                  ></textarea>
+                </div>
+
+                <div className="input-group">
+                  <span className="icon-wrapper">
+                    <AccountTreeIcon />
+                  </span>
+                  <select onChange={(e) => setCategory(e.target.value)}>
+                    <option value="">Choose Category</option>
+                    {categories.map((cate) => (
+                      <option key={cate} value={cate} name="category">
+                        {cate}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="input-group">
+                  <span className="icon-wrapper">
+                    <StorageIcon />
+                  </span>
+                  <input
+                    type="number"
+                    placeholder="Stock"
+                    required
+                    name="stock"
+                    onChange={(e) => setStock(e.target.value)}
+                  />
+                </div>
+
+                <div className="input-group">
+                  <span className="icon-wrapper">
+                    <PersonIcon />
+                  </span>
+                  <input
+                    style={{ padding: "2px 5px" }}
+                    type="file"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => setImages(Array.from(e.target.files))}
+                  />
+                </div>
+
+                <div
+                  style={{ display: "flex", gap: "20px" }}
+                  id="createProductFormImage"
                 >
-                  <h1>Create Product</h1>
+                  {imagesPreview.map((image, index) => (
+                    <img key={index} src={image} alt="Product Preview" />
+                  ))}
+                </div>
 
-                  <div className="input-group">
-                    <span className="icon-wrapper">
-                      <SpellcheckIcon />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Product Name"
-                      required
-                      value={name}
-                      name="name"
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </div>
+                <Button type="submit" disabled={isLoading} style={{ minWidth: "80px" }}>
+                  {isLoading ? "Creating..." : "Create"}
+                </Button>
 
-                  <div className="input-group">
-                    <span className="icon-wrapper">
-                      <AttachMoneyIcon />
-                    </span>
-                    <input
-                      type="number"
-                      placeholder="Price"
-                      name="price"
-                      value={price}
-                      required
-                      onChange={(e) => setPrice(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <span className="icon-wrapper">
-                      <DescriptionIcon />
-                    </span>
-
-                    <textarea
-                      placeholder="Product Description"
-                      value={description}
-                      name="description"
-                      onChange={(e) => setDescription(e.target.value)}
-                      cols="30"
-                      rows="1"
-                    ></textarea>
-                  </div>
-
-                  <div className="input-group">
-                    <span className="icon-wrapper">
-                      <AccountTreeIcon />
-                    </span>
-                    <select onChange={(e) => setCategory(e.target.value)}>
-                      <option value="">Choose Category</option>
-                      {categories.map((cate) => (
-                        <option key={cate} value={cate} name="category">
-                          {cate}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="input-group">
-                    <span className="icon-wrapper">
-                      <StorageIcon />
-                    </span>
-                    <input
-                      type="number"
-                      placeholder="Stock"
-                      required
-                      name="stock"
-                      onChange={(e) => setStock(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <span className="icon-wrapper">
-                      <PersonIcon />
-                    </span>
-                    <input
-                      style={{ padding: "2px 5px" }}
-                      type="file"
-                      name="images"
-                      accept="image/*"
-                      multiple
-                      onChange={(e) => setImages(Array.from(e.target.files))}
-                    />
-                  </div>
-
-                  <div
-                    style={{ display: "flex", gap: "20px" }}
-                    id="createProductFormImage"
-                  >
-                    {/* {imagesPreview.map((image, index) => (
-                        <img key={index} src={image} alt="Product Preview" />
-                    ))} */}
-                  </div>
-
-                  <Button type="submit" disabled={loading ? true : false}>
-                    Create
-                  </Button>
-                </form>
-              </div>
+              </form>
             </div>
-          </main>
-          {/* <Footer /> */}
-        </>
-      )}
+          </div>
+        </main>
+        {/* <Footer /> */}
+      </>
     </>
   );
 };

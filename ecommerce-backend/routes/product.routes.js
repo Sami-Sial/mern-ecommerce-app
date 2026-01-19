@@ -40,6 +40,7 @@ router.put(
   "/admin/product/:id",
   authMiddlewares.isAuthenticatedUser,
   authMiddlewares.isAdmin,
+  upload.any(),
   productControllers.updateProduct
 );
 

@@ -23,6 +23,7 @@ const UpdateProduct = () => {
   const { id } = useParams();
 
   const { error, product } = useSelector((state) => state.productSlice);
+  const { isLoading, error: updateProductError, success } = useSelector(state => state.adminSlice)
 
   const [name, setName] = useState(product?.name);
   const [price, setPrice] = useState("");
@@ -57,8 +58,11 @@ const UpdateProduct = () => {
       price,
       category,
       stock,
-      images,
     };
+
+    if (images && images.length > 0) {
+      myForm.images = images;
+    }
 
     dispatch(updateProduct({ id, myForm }));
   };
@@ -75,10 +79,13 @@ const UpdateProduct = () => {
     setCategory(product?.category);
     setOldImages(product?.images);
 
-    if (error) {
-      toast.error(error);
+    if (error || updateProductError) {
+      toast.error(error || updateProductError);
     }
-  }, [dispatch, id, error, product]);
+    if (success) {
+      toast.success("Product updated successfully");
+    }
+  }, [dispatch, id, error, product, success]);
 
   return (
     <>
@@ -91,12 +98,7 @@ const UpdateProduct = () => {
 
           {product && (
             <div
-              style={{
-                width: "calc(100vw - 200px)",
-                minHeight: "fit-content",
-                maxHeight: "fit-content",
-                padding: "10px",
-              }}
+
               className="form"
             >
               <form
@@ -203,7 +205,9 @@ const UpdateProduct = () => {
                     ))}
                 </div>
 
-                <Button type="submit">Update</Button>
+                <Button type="submit" disabled={isLoading} style={{ minWidth: "80px" }}>
+                  {isLoading ? "Updating..." : "Update"}
+                </Button>
               </form>
             </div>
           )}

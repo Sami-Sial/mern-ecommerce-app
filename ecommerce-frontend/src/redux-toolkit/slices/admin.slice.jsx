@@ -6,8 +6,7 @@ export const getAllOrders = createAsyncThunk(
   async (currentPage) => {
     try {
       const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_BASE_URL
+        `${import.meta.env.VITE_BACKEND_BASE_URL
         }/api/v1/admin/orders?currentPage=${currentPage}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -26,6 +25,7 @@ export const processOrder = createAsyncThunk("processOrder", async (id) => {
   try {
     const { data } = await axios.put(
       `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/order/${id}`,
+      {},
       { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
     );
     console.log(data);
@@ -55,8 +55,7 @@ export const getAllUsers = createAsyncThunk(
   async (currentPage) => {
     try {
       const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_BASE_URL
+        `${import.meta.env.VITE_BACKEND_BASE_URL
         }/api/v1/admin/users?currentPage=${currentPage}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -93,10 +92,8 @@ export const updateUserRole = createAsyncThunk(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/user/` + id,
         { id, role },
         {
-          headers: [
-            { "Content-Type": "application/json" },
-            { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          ],
+          headers:
+            { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
       console.log(data);
@@ -113,8 +110,7 @@ export const getAdminProducts = createAsyncThunk(
   async (currentPage) => {
     try {
       const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_BASE_URL
+        `${import.meta.env.VITE_BACKEND_BASE_URL
         }/api/v1/admin/products?currentPage=${currentPage}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -138,10 +134,9 @@ export const createProduct = createAsyncThunk(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/product/new`,
         { name, price, description, category, stock, images },
         {
-          headers: [
-            { "Content-Type": "multipart/form-data" },
-            { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          ],
+          headers:
+            { "Content-Type": "multipart/form-data", Authorization: `Bearer ${localStorage.getItem("token")}` },
+
         }
       );
       console.log(data);
@@ -156,17 +151,15 @@ export const createProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "updateProduct",
-  async ({ myForm, id }) => {
+  async ({ id, myForm }) => {
     console.log(myForm);
     try {
       const { data } = await axios.put(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/admin/product/` + id,
         myForm,
         {
-          headers: [
-            { "Content-Type": "multipart/form-data" },
-            { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          ],
+          headers:
+            { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "multipart/form-data" },
         }
       );
       console.log(data);
@@ -206,6 +199,13 @@ export const adminSlice = createSlice({
     totalUsersPages: null,
     totalAdminProdutsPages: null,
     totalOrdersPages: null,
+    totalOrders: null,
+    totalUsers: null,
+    totalProducts: null,
+    isDeleting: false,
+    isEditing: false,
+    isFeaturing: false,
+    success: false
   },
 
   reducers: {
@@ -217,6 +217,7 @@ export const adminSlice = createSlice({
       state.userRoleUpdateSuccess = false;
       state.createProductSuccess = false;
       state.deleteUserSuccess = false;
+      state.success = false
     },
   },
 
@@ -233,6 +234,7 @@ export const adminSlice = createSlice({
 
       if (action.payload.orders) {
         state.orders = action.payload.orders;
+        state.totalOrders = action.payload.totalOrders;
         state.totalOrdersPages = action.payload.totalOrdersPages;
       } else {
         state.error = action.payload;
@@ -258,14 +260,14 @@ export const adminSlice = createSlice({
 
     // delete order
     builder.addCase(deleteOrder.pending, (state, action) => {
-      state.isLoading = true;
+      state.isDeleting = true;
     });
     builder.addCase(deleteOrder.rejected, (state, action) => {
       state.error = action.payload;
+      state.isDeleting = false;
     });
     builder.addCase(deleteOrder.fulfilled, (state, action) => {
-      state.isLoading = false;
-
+      state.isDeleting = false;
       if (action.payload?.success) {
         state.deleteOrderSuccess = true;
       } else {
@@ -285,6 +287,7 @@ export const adminSlice = createSlice({
 
       if (action.payload.users) {
         state.users = action.payload.users;
+        state.totalUsers = action.payload.totalUsers;
         state.totalUsersPages = action.payload.totalUsersPages;
       } else {
         state.error = action.payload;
@@ -293,14 +296,14 @@ export const adminSlice = createSlice({
 
     // delete user admin
     builder.addCase(deleteUser.pending, (state, action) => {
-      state.isLoading = true;
+      state.isDeleting = true;
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
       state.error = action.payload;
+      state.isDeleting = false;
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
-      state.isLoading = false;
-
+      state.isDeleting = false;
       if (action.payload?.success) {
         state.deleteUserSuccess = true;
       } else {
@@ -310,13 +313,14 @@ export const adminSlice = createSlice({
 
     // update user role admin
     builder.addCase(updateUserRole.pending, (state, action) => {
-      state.isLoading = true;
+      state.isUpdating = true;
     });
     builder.addCase(updateUserRole.rejected, (state, action) => {
       state.error = action.payload;
+      state.isUpdating = false;
     });
     builder.addCase(updateUserRole.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.isUpdating = false;
 
       if (action.payload?.success) {
         state.userRoleUpdateSuccess = true;
@@ -339,6 +343,7 @@ export const adminSlice = createSlice({
 
       if (action.payload?.products) {
         state.products = action.payload.products;
+        state.totalProducts = action.payload.totalProducts;
         state.totalAdminProdutsPages = action.payload.totalAdminProdutsPages;
       } else {
         state.error = action.payload;
@@ -377,6 +382,7 @@ export const adminSlice = createSlice({
       state.isLoading = false;
 
       if (action.payload?.product) {
+        state.success = true;
         // state.product = action.payload.product;
       } else {
         state.error = action.payload;
@@ -385,13 +391,14 @@ export const adminSlice = createSlice({
 
     // delete product admin
     builder.addCase(deleteProduct.pending, (state, action) => {
-      state.isLoading = true;
+      state.isDeleting = true;
     });
     builder.addCase(deleteProduct.rejected, (state, action) => {
       state.error = action.payload;
+      state.isDeleting = false;
     });
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.isDeleting = false;
 
       if (action.payload?.success) {
         state.productDeleteSuccess = true;

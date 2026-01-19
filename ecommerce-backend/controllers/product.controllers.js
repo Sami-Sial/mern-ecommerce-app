@@ -27,34 +27,61 @@ module.exports.createProduct = AsyncErrorHandler(async (req, res) => {
 
 // Get Products with filters and search query
 module.exports.getFilteredProducts = AsyncErrorHandler(async (req, res) => {
-  const {
-    category = [],
-    brand = [],
-    price = 0,
-    ratings = 0,
-    currentPage = 1,
+  let {
+    category,
+    brand,
+    price,
+    ratings,
+    currentPage,
   } = req.query;
 
-  let filters = {};
-  if (category.length) {
-    filters.category = { $in: category.split(",") };
-  }
-  if (brand.length) {
-    filters.brand = { $in: brand.split(",") };
-  }
-  filters.ratings = { $gte: ratings };
-  filters.price = { $gte: price };
+  const filters = {};
 
+  /* CATEGORY FILTER */
+  if (category && category !== "undefined") {
+    const categories = category.split(",");
+    if (categories.length > 0) {
+      filters.category = { $in: categories };
+    }
+  }
+
+  /* BRAND FILTER */
+  if (brand && brand !== "undefined") {
+    const brands = brand.split(",");
+    if (brands.length > 0) {
+      filters.brand = { $in: brands };
+    }
+  }
+
+  /* PRICE FILTER */
+  if (price && price !== "undefined") {
+    const parsedPrice = Number(price);
+    if (!isNaN(parsedPrice)) {
+      filters.price = { $gte: parsedPrice };
+    }
+  }
+
+  /* RATINGS FILTER */
+  if (ratings && ratings !== "undefined") {
+    const parsedRatings = Number(ratings);
+    if (!isNaN(parsedRatings)) {
+      filters.ratings = { $gte: parsedRatings };
+    }
+  }
+
+  /* PAGINATION */
   const resultPerPage = 20;
-  const skip = resultPerPage * (currentPage - 1);
-  console.log(currentPage);
-  console.log(skip);
+  const page = Number(currentPage) || 1;
+  const skip = resultPerPage * (page - 1);
 
-  let products = await Product.find(filters).skip(skip).limit(resultPerPage);
+  /* PRODUCTS */
+  const products = await Product.find(filters)
+    .skip(skip)
+    .limit(resultPerPage);
 
-  const totalProducts = await Product.find(filters).skip(skip);
-  const totalPages = Math.ceil(totalProducts.length / resultPerPage);
-  console.log(totalPages);
+  /* TOTAL COUNT */
+  const totalProducts = await Product.countDocuments(filters);
+  const totalPages = Math.ceil(totalProducts / resultPerPage);
 
   res.status(200).json({
     success: true,
@@ -63,14 +90,15 @@ module.exports.getFilteredProducts = AsyncErrorHandler(async (req, res) => {
   });
 });
 
+
 // Get searched products
 module.exports.getSearchedProducts = AsyncErrorHandler(async (req, res) => {
   const { search_query } = req.query;
 
   const keyword = search_query
     ? {
-        name: { $regex: search_query, $options: "i" },
-      }
+      name: { $regex: search_query, $options: "i" },
+    }
     : {};
 
   const products = await Product.find(keyword);
@@ -125,27 +153,36 @@ module.exports.getAllProducts = AsyncErrorHandler(async (req, res) => {
 module.exports.getAdminProducts = AsyncErrorHandler(async (req, res) => {
   const { currentPage } = req.query;
 
-  if (currentPage == "undefined") {
-    let products = await Product.find();
-    res.status(200).json({ success: true, products });
+  // If currentPage is not provided, return all products
+  if (currentPage === "undefined" || !currentPage) {
+    const products = await Product.find();
+    const totalProducts = products.length;
+
+    res.status(200).json({
+      success: true,
+      products,
+      totalProducts,
+    });
     return;
   }
 
   const resultPerPage = 7;
-  const skip = resultPerPage * (currentPage - 1);
+  const page = Number(currentPage) || 1;
+  const skip = resultPerPage * (page - 1);
 
   const totalProducts = await Product.countDocuments();
   const totalAdminProdutsPages = Math.ceil(totalProducts / resultPerPage);
-  console.log(currentPage);
-  console.log(skip);
 
-  let products = await Product.find().skip(skip).limit(resultPerPage);
+  const products = await Product.find().skip(skip).limit(resultPerPage);
+
   res.status(200).json({
     success: true,
     products,
+    totalProducts,
     totalAdminProdutsPages,
   });
 });
+
 
 // Get Product Details
 module.exports.getProductDetails = AsyncErrorHandler(async (req, res, next) => {
@@ -170,16 +207,35 @@ module.exports.updateProduct = AsyncErrorHandler(async (req, res, next) => {
     return next(new ErrorHandler(404, "Product Not Found"));
   }
 
-  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
+  // Prepare update object
+  const updateData = { ...req.body };
+
+  // ✅ If new images are uploaded
+  if (req.files && req.files.length > 0) {
+    const images = req.files.map((file) => ({
+      public_id: file.filename,
+      url: file.path,
+    }));
+
+    // Replace old images with new ones
+    updateData.images = images;
+  }
+
+  product = await Product.findByIdAndUpdate(
+    req.params.id,
+    updateData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
   res.status(200).json({
     success: true,
     product,
   });
 });
+
 
 // Delete Product => Admin
 module.exports.deleteProduct = AsyncErrorHandler(async (req, res, next) => {

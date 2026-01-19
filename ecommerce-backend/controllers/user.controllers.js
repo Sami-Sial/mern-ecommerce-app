@@ -18,11 +18,12 @@ module.exports.registerUser = AsyncErrorHandler(async (req, res, next) => {
     name,
     email,
     password,
-    role: "admin",
+    role: "user",
     avatar: {
       public_id: filename,
       url: url,
     },
+    provider: "email"
   });
   const savedUser = await newUser.save();
 
@@ -166,6 +167,8 @@ module.exports.getUserDetails = AsyncErrorHandler(async (req, res, next) => {
 
 // update User password
 module.exports.updatePassword = AsyncErrorHandler(async (req, res, next) => {
+  console.log(req.body);
+
   const user = await User.findById(req.user.id).select("+password");
 
   const isPasswordMatched = await user.comparePassowrd(req.body.oldPassword);
@@ -233,28 +236,36 @@ exports.updateProfile = AsyncErrorHandler(async (req, res, next) => {
 module.exports.getAllUser = AsyncErrorHandler(async (req, res, next) => {
   const { currentPage } = req.query;
 
-  if (currentPage == "undefined") {
-    let users = await User.find();
-    res.status(200).json({ success: true, users });
+  // If currentPage is not provided, return all users
+  if (currentPage === "undefined" || !currentPage) {
+    const users = await User.find();
+    const totalUsers = users.length; // total count
+
+    res.status(200).json({
+      success: true,
+      users,
+      totalUsers,
+    });
     return;
   }
 
   const resultPerPage = 7;
-  const skip = resultPerPage * (currentPage - 1);
+  const page = Number(currentPage) || 1;
+  const skip = resultPerPage * (page - 1);
 
   const totalUsers = await User.countDocuments();
   const totalUsersPages = Math.ceil(totalUsers / resultPerPage);
-  console.log(currentPage);
-  console.log(skip);
 
-  let users = await User.find().skip(skip).limit(resultPerPage);
+  const users = await User.find().skip(skip).limit(resultPerPage);
 
   res.status(200).json({
     success: true,
     users,
+    totalUsers,
     totalUsersPages,
   });
 });
+
 
 // Get single user => admin
 module.exports.getSingleUser = AsyncErrorHandler(async (req, res, next) => {

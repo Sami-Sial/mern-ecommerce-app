@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import Sidebar from "../layout/DashboardSidebar";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ListAltIcon from "@mui/icons-material/ListAlt";
 import Button from "react-bootstrap/esm/Button";
-import Table from "react-bootstrap/Table";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-
 import PageTitle from "../layout/PageTitle";
-import exclamationImg from "../../assets/exclamation_mark.jpg";
+import "./stylesheets/UserOrders.css";
 import {
   myOrders,
   getOrderDetails,
 } from "../../redux-toolkit/slices/order.slice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserOrders = () => {
   const navigate = useNavigate();
@@ -23,156 +18,178 @@ const UserOrders = () => {
   const [orderDetailsModalShow, setOrderDetailsModalShow] = useState(false);
   const { user } = useSelector((state) => state.userSlice);
   let { orders, order } = useSelector((state) => state.orderSlice);
-  console.log(orders);
-  console.log(order);
 
   const showProductDetails = (id) => {
     dispatch(getOrderDetails(id));
     setOrderDetailsModalShow(true);
   };
 
+  const getStatusClass = (status) => {
+    const statusMap = {
+      'Processing': 'status-processing',
+      'Delivered': 'status-delivered',
+      'Shipped': 'status-shipped',
+      'Cancelled': 'status-cancelled'
+    };
+    return statusMap[status] || 'status-processing';
+  };
+
   useEffect(() => {
-    order = {};
     dispatch(myOrders());
   }, [dispatch]);
 
   return (
     <>
-      <PageTitle title={`Ecommerce- ${user.name}'s Orders`} />
+      <PageTitle title={`Ecommerce- ${user?.name}'s Orders`} />
       <Header />
 
-      <main>
-        <div style={{ display: "flex" }}>
-          <Sidebar />
-
-          {orders && orders.length ? (
-            <div style={{ padding: "1rem" }} className="content-wrapper">
-              <h4 style={{ textAlign: "center", marginBottom: "1rem" }}>
-                My Orders
-              </h4>
-
-              <div className="content-wrapper">
-                {orders && (
-                  <Table
-                    style={{ width: "80%", margin: "auto" }}
-                    striped
-                    bordered
-                  >
-                    <thead>
-                      <tr>
-                        <th>Order ID</th>
-                        <th>Order Date</th>
-                        <th>Order Price</th>
-                        <th>Order Status</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {orders.map((order) => (
-                        <tr key={order._id}>
-                          <td>{order._id}</td>
-                          <td>{order.createdAt.slice(0, 10)}</td>
-                          <td>{order.totalPrice}</td>
-                          <td style={{ color: "red" }}>{order.orderStatus}</td>
-                          <td>
-                            <Button
-                              onClick={() => showProductDetails(order._id)}
-                              size="sm"
-                              variant="secondary"
-                            >
-                              View Details
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                )}
+      <main id="user-orders-main">
+        {orders && orders.length ? (
+          <div id="user-orders-content">
+            {/* Page Header */}
+            <div id="user-orders-header">
+              <div>
+                <h1>My Orders</h1>
+                <p>Track and manage your orders</p>
+              </div>
+              <div id="orders-stats">
+                <div className="stat-badge">
+                  <span className="stat-label">Total Orders</span>
+                  <span className="stat-value">{orders.length}</span>
+                </div>
               </div>
             </div>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "calc(100vw - 200px)",
-                flexDirection: "column",
-              }}
-            >
-              <img width={50} height={50} src={exclamationImg} alt="" />
-              <h4>No orders yet</h4>
-              <Button>View Products</Button>
-            </div>
-          )}
-        </div>
-      </main>
-      {/* <Footer /> */}
 
-      {/* order details modal */}
+            {/* Orders Table */}
+            <div id="orders-table-container">
+              <table id="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map((order) => (
+                    <tr key={order._id}>
+                      <td className="order-id">#{order._id.slice(-8)}</td>
+                      <td className="order-date">
+                        {new Date(order.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </td>
+                      <td className="order-amount">${Math.round(order.totalPrice)}</td>
+                      <td>
+                        <span className={`status-badge ${getStatusClass(order.orderStatus)}`}>
+                          {order.orderStatus}
+                        </span>
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => showProductDetails(order._id)}
+                          className="btn-view-details"
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : (
+          <div id="no-orders-container">
+            <div id="no-orders-content">
+              <div className="no-orders-icon">📦</div>
+              <h2>No Orders Yet</h2>
+              <p>You haven't placed any orders yet. Start shopping now!</p>
+              <button
+                onClick={() => navigate('/products')}
+                className="btn-shop-now"
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Order Details Modal */}
       <Modal
-        style={{ padding: "10px" }}
         show={orderDetailsModalShow}
         onHide={() => setOrderDetailsModalShow(false)}
+        centered
+        className="order-details-modal"
       >
         {order && (
           <>
-            <Modal.Header closeButton></Modal.Header>
+            <Modal.Header closeButton>
+              <Modal.Title>Order Details</Modal.Title>
+            </Modal.Header>
 
-            <Modal.Body>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>Order ID</p>
-                <p>{order._id}</p>
+            <Modal.Body className="order-modal-body">
+              <div className="modal-section">
+                <h5 className="section-title">Order Information</h5>
+                <div className="info-row">
+                  <span className="info-label">Order ID</span>
+                  <span className="info-value order-id">#{order._id?.slice(-8)}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Order Date</span>
+                  <span className="info-value">{order?.createdAt?.slice(0, 10)}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Total Amount</span>
+                  <span className="info-value order-amount">${Math.round(order.totalPrice)}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Payment Method</span>
+                  <span className="info-value">Stripe</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Payment Status</span>
+                  <span className="info-value payment-success">{order.paymentInfo?.status}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Order Status</span>
+                  <span className={`status-badge ${getStatusClass(order.orderStatus)}`}>
+                    {order.orderStatus}
+                  </span>
+                </div>
               </div>
 
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>Order Date</p>
-                <p>{order?.createdAt?.slice(0, 10)}</p>
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>Order Price</p>
-                <p>&#x24;{Math.round(order.totalPrice)}</p>
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>Payment Method</p>
-                <p>Stripe</p>
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>Payment Status</p>
-                <p style={{ color: "green" }}>{order.paymentInfo?.status}</p>
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p>Order Status</p>
-                <p style={{ color: "red" }}>{order.orderStatus}</p>
-              </div>
-
-              <div>
-                <h5>Order Details</h5>
+              <div className="modal-section">
+                <h5 className="section-title">Order Items</h5>
                 {order?.orderItems?.map((item) => (
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                    key={item._id}
-                  >
-                    <p>{item.name}</p>
-                    <p>{item.quantity}</p>
-                    <p>&#x24;{Math.round(item.price * item.quantity)}</p>
+                  <div className="order-item" key={item._id}>
+                    <div className="item-info">
+                      <span className="item-name">{item.name}</span>
+                      <span className="item-quantity">Qty: {item.quantity}</span>
+                    </div>
+                    <span className="item-price">${Math.round(item.price * item.quantity)}</span>
                   </div>
                 ))}
               </div>
 
-              <div>
-                <h5>Address Details</h5>
-                <p>Phone No : {order.shippingInfo?.phoneNo}</p>
-                <p>Address: {order.shippingInfo?.address}</p>
+              <div className="modal-section">
+                <h5 className="section-title">Shipping Address</h5>
+                <div className="address-info">
+                  <p><strong>Phone:</strong> {order.shippingInfo?.phoneNo}</p>
+                  <p><strong>Address:</strong> {order.shippingInfo?.address}</p>
+                </div>
               </div>
             </Modal.Body>
           </>
         )}
       </Modal>
+
+      <Footer />
     </>
   );
 };

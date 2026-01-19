@@ -109,10 +109,10 @@ export const updateProfile = createAsyncThunk(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/me/update`,
         sendedData,
         {
-          headers: [
-            { "Content-Type": "multipart/form-data" },
-            { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          ],
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
         }
       );
 
@@ -134,10 +134,9 @@ export const updatePassword = createAsyncThunk(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/password/update`,
         { oldPassword, newPassword, confirmPassword },
         {
-          headers: [
-            { "Content-Type": "application/json" },
-            { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          ],
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
         }
       );
 
@@ -181,8 +180,7 @@ export const resetPassword = createAsyncThunk(
   async ({ token, password, confirmPassword }) => {
     try {
       const { data } = await axios.put(
-        `${
-          import.meta.env.VITE_BACKEND_BASE_URL
+        `${import.meta.env.VITE_BACKEND_BASE_URL
         }/api/v1/password/reset/${token}`,
         { token, password, confirmPassword },
         {
@@ -226,7 +224,9 @@ export const userSlice = createSlice({
     user: null,
     isLoading: false,
     error: null,
-    isAuthenticated: false,
+    isAuthenticated: null,
+    mailError: null,
+    resetPasswordError: null,
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
@@ -249,6 +249,7 @@ export const userSlice = createSlice({
       state.addedToCartSuccess = null;
       state.signupSuccess = false;
       state.signupError = false;
+      state.isLoading = false;
       state.loginSuccess = null;
       state.loginError = null;
       state.passwordUpdateSuccess = false;
@@ -262,6 +263,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.error = action.payload;
+      state.isAuthenticated = false;
     });
     builder.addCase(signup.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -269,8 +271,10 @@ export const userSlice = createSlice({
         state.user = action.payload.user;
         state.signupSuccess = true;
         state.signupError = null;
+        state.isAuthenticated = true;
       } else {
         state.signupError = action.payload;
+        state.isAuthenticated = false;
       }
     });
 
@@ -280,6 +284,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginError = action.payload;
+      state.isAuthenticated = false;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -288,8 +293,10 @@ export const userSlice = createSlice({
         state.loginSuccess = true;
         state.user = action.payload.user;
         state.loginError = null;
+        state.isAuthenticated = true;
       } else {
         state.loginError = action.payload;
+        state.isAuthenticated = false;
       }
     });
 
@@ -299,6 +306,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(loginWithGoogle.rejected, (state, action) => {
       state.error = action.payload;
+      state.isAuthenticated = false;
     });
     builder.addCase(loginWithGoogle.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -306,8 +314,10 @@ export const userSlice = createSlice({
         state.user = action.payload.user;
         state.loginSuccess = true;
         state.loginError = null;
+        state.isAuthenticated = true;
       } else {
         state.loginError = action.payload;
+        state.isAuthenticated = false;
       }
     });
 
@@ -340,7 +350,9 @@ export const userSlice = createSlice({
     builder.addCase(loadUser.rejected, (state, action) => {
       console.log("Error ", action.payload);
       console.log("rejected");
+      state.isLoading = false;
       state.error = action.payload;
+      state.isAuthenticated = false;
     });
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -401,20 +413,22 @@ export const userSlice = createSlice({
     // forgot password
     builder.addCase(forgotPassword.pending, (state, action) => {
       state.isLoading = true;
+      state.mailError = null;
     });
     builder.addCase(forgotPassword.rejected, (state, action) => {
       console.log("Error ", action.payload);
       console.log("rejected");
-      state.error = action.payload;
+      state.isLoading = false;
+      state.mailError = action.payload;
     });
     builder.addCase(forgotPassword.fulfilled, (state, action) => {
       state.isLoading = false;
       console.log("fulfilled");
       if (action.payload.success) {
-        state.error = null;
+        state.mailError = null;
         state.message = action.payload.message;
       } else {
-        state.error = action.payload;
+        state.mailError = action.payload;
       }
     });
 
@@ -425,16 +439,16 @@ export const userSlice = createSlice({
     builder.addCase(resetPassword.rejected, (state, action) => {
       console.log("Error ", action.payload);
       console.log("rejected");
-      state.error = action.payload;
+      state.resetPasswordError = action.payload;
     });
     builder.addCase(resetPassword.fulfilled, (state, action) => {
       state.isLoading = false;
       console.log("fulfilled");
       if (action.payload.success) {
-        state.error = null;
+        state.resetPasswordError = null;
         state.success = action.payload.success;
       } else {
-        state.error = action.payload;
+        state.resetPasswordError = action.payload;
       }
     });
 

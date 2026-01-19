@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { Link } from "react-router-dom";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { useNavigate } from "react-router-dom";
+import PeopleIcon from "@material-ui/icons/People"; // Admin - Users
+import StoreIcon from "@material-ui/icons/Store";   // Admin - Products
 import { toast } from "react-toastify";
 
 import { logout } from "../../redux-toolkit/slices/user.slice";
@@ -14,25 +15,18 @@ import { useDispatch, useSelector } from "react-redux";
 import "./stylesheets/UserOptions.css";
 
 const UserOptions = ({ user }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showDropdown, setShowDropdown] = useState(false);
-
   const { cartItems } = useSelector((state) => state.userSlice);
+
+  const isAdmin = user?.role === "admin";
 
   const logoutUser = () => {
     dispatch(logout());
-    navigate("/login");
     toast.success("Logged out successfully");
     setShowDropdown(false);
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    setShowDropdown(false);
-  };
-
-  // Get user initials as fallback
   const getUserInitials = () => {
     if (!user?.name) return "U";
     const names = user.name.split(" ");
@@ -41,9 +35,6 @@ const UserOptions = ({ user }) => {
     }
     return user.name.substring(0, 2).toUpperCase();
   };
-
-  const dashboardPath =
-    user.role === "admin" ? "/admin/dashboard" : "/user/dashboard";
 
   return (
     <div className="user-options-wrapper">
@@ -96,69 +87,69 @@ const UserOptions = ({ user }) => {
             <div className="dropdown-user-info">
               <h6>{user.name}</h6>
               <p>{user.email}</p>
-              <span className="user-role-badge">
-                {user.role === "admin" ? "Admin" : "User"}
+              <span className={`user-role-badge ${isAdmin ? "admin" : "user"}`}>
+                {isAdmin ? "Admin" : "User"}
               </span>
             </div>
           </div>
 
           <Dropdown.Divider />
 
-          {/* Dashboard */}
-          <Dropdown.Item
-            onClick={() => handleNavigation(dashboardPath)}
-            className="dropdown-menu-item"
-          >
-            <DashboardIcon className="dropdown-icon" />
-            <span>Dashboard</span>
-          </Dropdown.Item>
-
+          {/* Dashboard - Admin only */}
+          {isAdmin && (
+            <Dropdown.Item as={Link} to="/admin/dashboard" className="dropdown-menu-item">
+              <DashboardIcon className="dropdown-icon" />
+              <span>Dashboard</span>
+            </Dropdown.Item>
+          )}
           {/* Profile */}
-          <Dropdown.Item
-            onClick={() => handleNavigation("/user/profile")}
-            className="dropdown-menu-item"
-          >
+          <Dropdown.Item as={Link} to={isAdmin ? "/admin/profile" : "/user/profile"} className="dropdown-menu-item">
             <PersonIcon className="dropdown-icon" />
             <span>My Profile</span>
           </Dropdown.Item>
 
-          {/* Orders */}
-          <Dropdown.Item
-            onClick={() => handleNavigation("/user/orders")}
-            className="dropdown-menu-item"
-          >
-            <ListAltIcon className="dropdown-icon" />
-            <span>My Orders</span>
-          </Dropdown.Item>
+          {/* Regular user items */}
+          {!isAdmin && (
+            <>
+              <Dropdown.Item as={Link} to="/user/orders" className="dropdown-menu-item">
+                <ListAltIcon className="dropdown-icon" />
+                <span>My Orders</span>
+              </Dropdown.Item>
 
-          {/* Cart */}
-          <Dropdown.Item
-            onClick={() => handleNavigation("/user/cart")}
-            className="dropdown-menu-item"
-          >
-            <ShoppingCartIcon className="dropdown-icon" />
-            <span>Cart</span>
-            {cartItems.length > 0 && (
-              <span className="cart-badge-dropdown">{cartItems.length}</span>
-            )}
-          </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/user/cart" className="dropdown-menu-item">
+                <ShoppingCartIcon className="dropdown-icon" />
+                <span>Cart</span>
+                {cartItems.length > 0 && (
+                  <span className="cart-badge-dropdown">{cartItems.length}</span>
+                )}
+              </Dropdown.Item>
+            </>
+          )}
 
-          {/* Settings */}
-          <Dropdown.Item
-            onClick={() => handleNavigation("/user/settings")}
-            className="dropdown-menu-item"
-          >
-            <SettingsIcon className="dropdown-icon" />
-            <span>Settings</span>
-          </Dropdown.Item>
+          {/* Admin management links */}
+          {isAdmin && (
+            <>
+              <Dropdown.Item as={Link} to="/admin/orders" className="dropdown-menu-item">
+                <ListAltIcon className="dropdown-icon" />
+                <span>Orders</span>
+              </Dropdown.Item>
+
+              <Dropdown.Item as={Link} to="/admin/users" className="dropdown-menu-item">
+                <PeopleIcon className="dropdown-icon" />
+                <span>Users</span>
+              </Dropdown.Item>
+
+              <Dropdown.Item as={Link} to="/admin/products" className="dropdown-menu-item">
+                <StoreIcon className="dropdown-icon" />
+                <span>Products</span>
+              </Dropdown.Item>
+            </>
+          )}
 
           <Dropdown.Divider />
 
           {/* Logout */}
-          <Dropdown.Item
-            onClick={logoutUser}
-            className="dropdown-menu-item logout-item"
-          >
+          <Dropdown.Item onClick={logoutUser} className="dropdown-menu-item logout-item">
             <ExitToAppIcon className="dropdown-icon" />
             <span>Logout</span>
           </Dropdown.Item>
