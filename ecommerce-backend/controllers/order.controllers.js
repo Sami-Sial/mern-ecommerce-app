@@ -3,7 +3,7 @@ const Order = require("../models/order.model");
 const ErrorHandler = require("../utils/ErrorHandler");
 const AsyncErrorHandler = require("../utils/AsyncErrorHandler");
 
-// Create new Order
+// Create a new Order
 module.exports.newOrder = AsyncErrorHandler(async (req, res, next) => {
   const {
     shippingInfo,
@@ -90,7 +90,10 @@ module.exports.getAllOrders = AsyncErrorHandler(async (req, res, next) => {
   const totalOrders = await Order.countDocuments();
   const totalOrdersPages = Math.ceil(totalOrders / resultPerPage);
 
-  let orders = await Order.find().skip(skip).limit(resultPerPage).populate("user", "name email");
+  let orders = await Order.find()
+    .skip(skip)
+    .limit(resultPerPage)
+    .populate("user", "name email");
 
   let totalAmount = 0;
   orders.forEach((order) => {
