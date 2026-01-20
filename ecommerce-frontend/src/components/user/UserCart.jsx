@@ -4,7 +4,7 @@ import Sidebar from "../layout/DashboardSidebar";
 import CartItemsTable from "./CartItemsTable";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import emptyCart from "../../assets/EmptyCart.png";
+import emptyCart from "../../assets/emptycart.png";
 
 import PageTitle from "../layout/PageTitle";
 import "./stylesheets/UserCart.css";
