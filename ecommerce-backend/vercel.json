@@ -1,16 +1,41 @@
 {
     "version": 2,
     "builds": [
-        { "src": "./index.js", "use": "@vercel/node"}
-    ],
-    "routes": [
         {
-            "src": "/(.*)",
-            "dest": "/",
-            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            }
+            "src": "index.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "headers": [
+        {
+            "source": "/api/v1/(.*)",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                },
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "https://mern-ecommerce-app-frontend-nine.vercel.app"
+                },
+                {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+                },
+                {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type,Authorization,Accept,X-Requested-With"
+                }
+            ]
+        },
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "https://mern-ecommerce-app-frontend-nine.vercel.app"
+                }
+            ]
         }
     ]
 }
