@@ -44,7 +44,9 @@ const ConfirmOrder = () => {
             totalPrice,
           },
         },
-        { withCredentials: true }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
 
       await stripe.redirectToCheckout({ sessionId: data.id });
@@ -98,7 +100,8 @@ const ConfirmOrder = () => {
                   <th>Total</th>
                   <th></th>
                   <th>
-                    ₹{Math.round(
+                    ₹
+                    {Math.round(
                       cartItems.reduce(
                         (acc, item) => acc + item.quantity * item.price,
                         0
@@ -161,9 +164,10 @@ const ConfirmOrder = () => {
                     cursor: isProcessingPayment ? "not-allowed" : "pointer",
                   }}
                 >
-                  {isProcessingPayment ? "Preparing Payment..." : "Proceed to Payment"}
+                  {isProcessingPayment
+                    ? "Preparing Payment..."
+                    : "Proceed to Payment"}
                 </button>
-
               </div>
             </div>
           </div>
