@@ -7,6 +7,14 @@ const app = express();
 const cors = require("cors");
 const axios = require("axios");
 const User = require("./models/user.model");
+
+// STRIPE WEBHOOK
+app.post(
+  "/api/v1/webhook",
+  express.raw({ type: "application/json" }),
+  require("./controllers/stripeWebhook.controller")
+);
+
 // Data Parsing
 app.use(
   cors({

@@ -1,26 +1,37 @@
-const AsyncErrorHandler = require("../utils/AsyncErrorHandler");
+// controllers/payment.controller.js
 const stripe = require("stripe")(process.env.STRIPE_API_SECRET);
 
-module.exports.processPayment = AsyncErrorHandler(async (req, res, next) => {
-  console.log(req.body);
-  const lineItems = req.body.map((product) => ({
+module.exports.processPayment = async (req, res) => {
+  const { cartItems, userId, shippingInfo, prices } = req.body;
+
+  const lineItems = cartItems.map((item) => ({
     price_data: {
       currency: "usd",
       product_data: {
-        name: product.name,
+        name: item.name,
       },
-      unit_amount: Math.round(product.price * 100),
+      unit_amount: Math.round(item.price * 100),
     },
-    quantity: product.quantity,
+    quantity: item.quantity,
   }));
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
+
     success_url: `${process.env.FRONTEND_URL}/user/payment/success`,
     cancel_url: `${process.env.FRONTEND_URL}/user/payment/failure`,
+
+    metadata: {
+      userId,
+      shippingInfo: JSON.stringify(shippingInfo),
+      prices: JSON.stringify(prices),
+      cartItems: JSON.stringify(cartItems),
+    },
   });
 
-  res.json({ id: session.id });
-});
+  res.status(200).json({ id: session.id });
+};
+
+

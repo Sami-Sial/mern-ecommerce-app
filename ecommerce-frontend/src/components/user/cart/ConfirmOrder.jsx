@@ -31,53 +31,23 @@ const ConfirmOrder = () => {
   const proceedToPayment = async () => {
     try {
       setIsProcessingPayment(true);
-
-      const stripe = await loadStripe(
-        `${import.meta.env.VITE_STRIPE_API_KEY}`
-      );
-
-      const products = cartItems;
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/process/payment`,
-        [...products],
         {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          cartItems,
+          userId: user._id,
+          shippingInfo,
+          prices: {
+            itemsPrice: subtotal,
+            taxPrice: tax,
+            shippingPrice: shippingCharges,
+            totalPrice,
           },
-        }
+        },
+        { withCredentials: true }
       );
 
-      const session = data;
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-
-      if (result.error) {
-        console.error(result.error);
-        setIsProcessingPayment(false);
-        return;
-      }
-
-      // Place order
-      const orderItems = cartItems.map((item) => ({
-        ...item,
-        product: item._id,
-        image: item.images[0],
-      }));
-
-      const order = {
-        shippingInfo,
-        paymentInfo: { id: session.id, status: "paid" },
-        orderItems,
-        itemsPrice: subtotal,
-        taxPrice: tax,
-        shippingPrice: shippingCharges,
-        totalPrice,
-      };
-
-      dispatch(createOrder(order));
+      await stripe.redirectToCheckout({ sessionId: data.id });
     } catch (error) {
       console.error(error);
       setIsProcessingPayment(false);
