@@ -52,6 +52,9 @@ const ConfirmOrder = () => {
       await stripe.redirectToCheckout({ sessionId: data.id });
     } catch (error) {
       console.error(error);
+      toast.error(
+        error.message || error.response?.data?.message || "Something went wrong"
+      );
       setIsProcessingPayment(false);
     }
   };
