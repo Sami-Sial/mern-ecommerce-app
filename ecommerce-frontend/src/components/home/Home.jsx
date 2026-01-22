@@ -107,7 +107,7 @@ const Home = () => {
             <span className="header-underline"></span>
           </h2>
 
-          {loading || products.length === 0 ? (
+          {isLoading ? (
             <div style={{ padding: "1rem" }}>
               {" "}
               <ProductSkeleton count={8} />
