@@ -40,7 +40,7 @@ const Footer = () => {
           <h4 style={styles.heading}>Developer</h4>
           <div style={styles.links}>
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/Sami-Sial"
               target="_blank"
               rel="noopener noreferrer"
               style={styles.link}
@@ -57,7 +57,7 @@ const Footer = () => {
               GitHub
             </a>
             <a
-              href="https://linkedin.com/in/yourusername"
+              href="https://www.linkedin.com/in/sami-ullah-b536a8338"
               target="_blank"
               rel="noopener noreferrer"
               style={styles.link}
@@ -74,7 +74,7 @@ const Footer = () => {
               LinkedIn
             </a>
             <a
-              href="https://yourportfolio.com"
+              href="https://sami-sial-portfolio.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               style={styles.link}
@@ -91,7 +91,7 @@ const Footer = () => {
               Portfolio
             </a>
             <a
-              href="/resume.pdf"
+              href="https://sami-resume.tiiny.site"
               target="_blank"
               rel="noopener noreferrer"
               style={styles.link}
