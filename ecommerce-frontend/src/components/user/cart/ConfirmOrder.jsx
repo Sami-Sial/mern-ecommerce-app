@@ -32,6 +32,7 @@ const ConfirmOrder = () => {
   const proceedToPayment = async () => {
     try {
       setIsProcessingPayment(true);
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/process/payment`,
         {

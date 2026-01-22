@@ -13,6 +13,7 @@ import Carousel from "react-bootstrap/Carousel";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Loader from "../layout/Loader.jsx";
+import ProductDetailsSkeleton from "../skeletons/ProductDetailsSkeletonn.jsx";
 
 import { useSelector, useDispatch } from "react-redux";
 import { addItemsToCart } from "../../redux-toolkit/slices/user.slice.jsx";
@@ -31,7 +32,7 @@ const ProductDetails = () => {
   const [reviewModalShow, setReviewModalShow] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const { product, error, reviewSuccess, loading } = useSelector(
+  const { product, error, reviewSuccess, isLoading } = useSelector(
     (state) => state.productSlice
   );
   const { addedToCartSuccess } = useSelector((state) => state.userSlice);
@@ -97,8 +98,8 @@ const ProductDetails = () => {
 
       <main className="content-wrapper" style={{ width: "100vw" }}>
         {/* product details */}
-        {loading ? (
-          <Loader />
+        {isLoading ? (
+          <ProductDetailsSkeleton />
         ) : (
           <>
             {product && (
@@ -132,8 +133,6 @@ const ProductDetails = () => {
                     )}
                     <p>Description : {product.description}</p>
 
-
-
                     <div className="cart-control-section">
                       <div className="quantity-wrapper">
                         <button
@@ -163,7 +162,9 @@ const ProductDetails = () => {
                       </div>
 
                       <button
-                        className={`add-to-cart-btn ${product.stock <= 0 ? "disabled" : ""}`}
+                        className={`add-to-cart-btn ${
+                          product.stock <= 0 ? "disabled" : ""
+                        }`}
                         onClick={addProductsToCart}
                         disabled={product.stock <= 0}
                       >
@@ -214,7 +215,6 @@ const ProductDetails = () => {
                     Write a Review
                   </button>
                 </div> */}
-
 
                 {/* review modal */}
                 <Modal
