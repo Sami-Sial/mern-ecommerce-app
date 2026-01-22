@@ -13,7 +13,9 @@ import "./stylesheets/Home.css";
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { products, loading, error } = useSelector((state) => state.productSlice);
+  const { products, isLoading, error } = useSelector(
+    (state) => state.productSlice
+  );
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -24,8 +26,8 @@ const Home = () => {
 
   const newestArrivals = products
     ? [...products]
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      .slice(0, 8)
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 8)
     : [];
 
   return (
@@ -42,8 +44,11 @@ const Home = () => {
             <span className="header-underline"></span>
           </h2>
 
-          {loading || products.length === 0 ? (
-            <div style={{ padding: "1rem" }}> <ProductSkeleton count={8} /></div>
+          {isLoading ? (
+            <div style={{ padding: "1rem" }}>
+              {" "}
+              <ProductSkeleton count={8} />
+            </div>
           ) : (
             <div className="products-wrapper">
               {newestArrivals.map((product) => (
@@ -61,14 +66,20 @@ const Home = () => {
                     <h3 className="product-title">{product.name}</h3>
 
                     <div className="product-tags">
-                      <span className="tag tag-primary">{product.category}</span>
+                      <span className="tag tag-primary">
+                        {product.category}
+                      </span>
                       {product.brand && (
-                        <span className="tag tag-secondary">{product.brand}</span>
+                        <span className="tag tag-secondary">
+                          {product.brand}
+                        </span>
                       )}
                     </div>
 
                     <div className="product-footer">
-                      <p className="product-price">₹{product.price.toLocaleString()}</p>
+                      <p className="product-price">
+                        ₹{product.price.toLocaleString()}
+                      </p>
 
                       <div className="product-rating">
                         <div className="rating-stars">
@@ -97,7 +108,10 @@ const Home = () => {
           </h2>
 
           {loading || products.length === 0 ? (
-            <div style={{ padding: "1rem" }}> <ProductSkeleton count={8} /></div>
+            <div style={{ padding: "1rem" }}>
+              {" "}
+              <ProductSkeleton count={8} />
+            </div>
           ) : (
             <div className="products-wrapper">
               {products?.map(
@@ -117,14 +131,20 @@ const Home = () => {
                         <h3 className="product-title">{product.name}</h3>
 
                         <div className="product-tags">
-                          <span className="tag tag-primary">{product.category}</span>
+                          <span className="tag tag-primary">
+                            {product.category}
+                          </span>
                           {product.brand && (
-                            <span className="tag tag-secondary">{product.brand}</span>
+                            <span className="tag tag-secondary">
+                              {product.brand}
+                            </span>
                           )}
                         </div>
 
                         <div className="product-footer">
-                          <p className="product-price">₹{product.price.toLocaleString()}</p>
+                          <p className="product-price">
+                            ₹{product.price.toLocaleString()}
+                          </p>
 
                           <div className="product-rating">
                             <div className="rating-stars">

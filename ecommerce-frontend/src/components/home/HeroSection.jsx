@@ -21,7 +21,8 @@ const HeroSection = () => {
       height: "calc(100vh - 5rem)",
       width: "100%",
       overflow: "hidden",
-      background: "linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0f051a 100%)",
+      background:
+        "linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0f051a 100%)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -40,7 +41,8 @@ const HeroSection = () => {
       width: "500px",
       height: "500px",
       borderRadius: "50%",
-      background: "radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, transparent 70%)",
+      background:
+        "radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, transparent 70%)",
       top: "-10%",
       left: "-10%",
       filter: "blur(90px)",
@@ -54,7 +56,8 @@ const HeroSection = () => {
       width: "500px",
       height: "500px",
       borderRadius: "50%",
-      background: "radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)",
+      background:
+        "radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)",
       bottom: "-10%",
       right: "-10%",
       filter: "blur(90px)",
@@ -68,7 +71,8 @@ const HeroSection = () => {
       width: "600px",
       height: "600px",
       borderRadius: "50%",
-      background: "radial-gradient(circle, rgba(236, 72, 153, 0.22) 0%, transparent 70%)",
+      background:
+        "radial-gradient(circle, rgba(236, 72, 153, 0.22) 0%, transparent 70%)",
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
@@ -99,7 +103,8 @@ const HeroSection = () => {
       alignItems: "center",
       gap: "6px",
       padding: "8px 16px",
-      background: "linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.15))",
+      background:
+        "linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.15))",
       border: "1px solid rgba(168, 85, 247, 0.3)",
       borderRadius: "50px",
       backdropFilter: "blur(10px)",
@@ -130,7 +135,8 @@ const HeroSection = () => {
     },
 
     gradientTitle: {
-      background: "linear-gradient(90deg, #a855f7 0%, #ec4899 50%, #3b82f6 100%)",
+      background:
+        "linear-gradient(90deg, #a855f7 0%, #ec4899 50%, #3b82f6 100%)",
       backgroundSize: "200% 200%",
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
@@ -253,16 +259,17 @@ const HeroSection = () => {
         </h1>
 
         <p style={styles.subtitle}>
-          Curated collections of fashion, tech & exclusive drops. Limited quantities.
+          Curated collections of fashion, tech & exclusive drops. Limited
+          quantities.
         </p>
 
         <div style={styles.statsContainer}>
           <div style={styles.statItem}>
-            <div style={styles.statNumber}>500K+</div>
+            <div style={styles.statNumber}>2K+</div>
             <div style={styles.statLabel}>Happy Customers</div>
           </div>
           <div style={styles.statItem}>
-            <div style={styles.statNumber}>50K+</div>
+            <div style={styles.statNumber}>1K+</div>
             <div style={styles.statLabel}>Products</div>
           </div>
           <div style={styles.statItem}>
@@ -272,7 +279,8 @@ const HeroSection = () => {
         </div>
 
         <div style={styles.ctaButtons}>
-          <NavLink to={"/login"}
+          <NavLink
+            to={"/login"}
             style={styles.btnPrimary}
             onMouseEnter={(e) => (e.target.style.transform = "scale(1.06)")}
             onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
@@ -280,7 +288,8 @@ const HeroSection = () => {
             Shop Now →
           </NavLink>
 
-          <NavLink to={"/products"}
+          <NavLink
+            to={"/products"}
             style={styles.btnSecondary}
             onMouseEnter={(e) => {
               e.target.style.background = "rgba(168, 85, 247, 0.1)";
@@ -297,14 +306,30 @@ const HeroSection = () => {
 
         <div style={styles.trustBadges}>
           <div style={styles.trustItem}>
-            <svg style={styles.checkIcon} fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            <svg
+              style={styles.checkIcon}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
             </svg>
             <span style={styles.trustText}>Free Shipping</span>
           </div>
           <div style={styles.trustItem}>
-            <svg style={styles.checkIcon} fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            <svg
+              style={styles.checkIcon}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
             </svg>
             <span style={styles.trustText}>No Hidden Charges</span>
           </div>
@@ -313,18 +338,34 @@ const HeroSection = () => {
 
       <style jsx>{`
         @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50%      { background-position: 100% 50%; }
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
 
         @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50%      { opacity: 0.55; }
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.55;
+          }
         }
 
         @media (max-width: 640px) {
-          .ctaButtons { flex-direction: column; gap: 14px; }
-          button { width: 100%; max-width: 300px; }
+          .ctaButtons {
+            flex-direction: column;
+            gap: 14px;
+          }
+          button {
+            width: 100%;
+            max-width: 300px;
+          }
         }
       `}</style>
     </section>
