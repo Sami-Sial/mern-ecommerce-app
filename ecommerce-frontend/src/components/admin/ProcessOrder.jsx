@@ -85,7 +85,7 @@ const ProcessOrder = () => {
                               <img
                                 width={30}
                                 height={30}
-                                src={item.images[0].url}
+                                src={item?.images[0]?.url}
                                 alt={item.name}
                               />
                             </td>
@@ -136,14 +136,20 @@ const ProcessOrder = () => {
                   {/* SHIPPING ADDRESS */}
                   <div>
                     <h5>Shipping Address</h5>
-                    <p><strong>Name:</strong> {order.user?.name}</p>
                     <p>
-                      <strong>Address:</strong>{" "}
-                      {order.shippingInfo?.address}, {order.shippingInfo?.city},{" "}
-                      {order.shippingInfo?.state}, {order.shippingInfo?.country}
+                      <strong>Name:</strong> {order.user?.name}
                     </p>
-                    <p><strong>Pin Code:</strong> {order.shippingInfo?.pinCode}</p>
-                    <p><strong>Phone:</strong> {order.shippingInfo?.phoneNo}</p>
+                    <p>
+                      <strong>Address:</strong> {order.shippingInfo?.address},{" "}
+                      {order.shippingInfo?.city}, {order.shippingInfo?.state},{" "}
+                      {order.shippingInfo?.country}
+                    </p>
+                    <p>
+                      <strong>Pin Code:</strong> {order.shippingInfo?.pinCode}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {order.shippingInfo?.phoneNo}
+                    </p>
                   </div>
 
                   {/* PROCESS ORDER */}
@@ -163,11 +169,12 @@ const ProcessOrder = () => {
                         >
                           {isLoading ? "Processing..." : "Deliver Order"}
                         </Button>
-
                       ) : (
                         <div>
                           <p>✓ Order Delivered Successfully</p>
-                          <p>Delivery Date: {order?.deliveredAt?.slice(0, 10)}</p>
+                          <p>
+                            Delivery Date: {order?.deliveredAt?.slice(0, 10)}
+                          </p>
                         </div>
                       )}
                     </div>
