@@ -32,9 +32,11 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(fetchFilteredProducts({ page: currentPage }));
+  }, [dispatch, currentPage]);
 
+  useEffect(() => {
     if (error) toast.error(error);
-  }, [dispatch, currentPage, error]);
+  }, [error]);
 
   return (
     <>
@@ -59,14 +61,18 @@ const Products = () => {
               {/* VIEW TOGGLE */}
               <div className="view-toggle">
                 <button
-                  className={`view-btn-toggle ${viewMode === "grid" ? "active" : ""}`}
+                  className={`view-btn-toggle ${
+                    viewMode === "grid" ? "active" : ""
+                  }`}
                   onClick={() => setViewMode("grid")}
                   title="Grid View"
                 >
                   <GridViewIcon sx={{ fontSize: 20 }} />
                 </button>
                 <button
-                  className={`view-btn-toggle ${viewMode === "list" ? "active" : ""}`}
+                  className={`view-btn-toggle ${
+                    viewMode === "list" ? "active" : ""
+                  }`}
                   onClick={() => setViewMode("list")}
                   title="List View"
                 >
@@ -118,16 +124,12 @@ const Products = () => {
                       </div>
 
                       <div className="product-footer">
-                        <p className="product-price">
-                          ${product.price}
-                        </p>
+                        <p className="product-price">${product.price}</p>
 
                         <div className="product-rating">
                           <div className="rating-stars">
                             <StarIcon sx={{ fontSize: 14 }} />
-                            <span>
-                              {product.ratings?.toFixed(1) || "0.0"}
-                            </span>
+                            <span>{product.ratings?.toFixed(1) || "0.0"}</span>
                           </div>
                         </div>
                       </div>

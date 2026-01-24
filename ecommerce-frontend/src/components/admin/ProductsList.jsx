@@ -48,7 +48,12 @@ const ProductList = () => {
       setFeaturedLoadingId(id);
 
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/product/featured/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/api/v1/product/featured/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
 
       toast.success("Product added to featured products list");
@@ -65,7 +70,12 @@ const ProductList = () => {
       setFeaturedLoadingId(id);
 
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/v1/product/featured/remove/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        `${
+          import.meta.env.VITE_BACKEND_BASE_URL
+        }/api/v1/product/featured/remove/${id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
 
       toast.success("Product removed from featured products list");
@@ -136,7 +146,7 @@ const ProductList = () => {
                       <tr key={product._id}>
                         <td>
                           <img
-                            className="product-image"
+                            className="product-img"
                             src={product.images[0]?.url}
                             alt={product.name}
                           />
@@ -147,8 +157,9 @@ const ProductList = () => {
 
                         <td>
                           <span
-                            className={`stock-badge ${product.stock > 0 ? "in-stock" : "out-stock"
-                              }`}
+                            className={`stock-badge ${
+                              product.stock > 0 ? "in-stock" : "out-stock"
+                            }`}
                           >
                             {product.stock}
                           </span>
@@ -170,9 +181,7 @@ const ProductList = () => {
                             <button
                               className="btn-edit"
                               onClick={() =>
-                                navigate(
-                                  `/admin/edit_product/${product._id}`
-                                )
+                                navigate(`/admin/edit_product/${product._id}`)
                               }
                               title="Edit Product"
                             >
@@ -191,8 +200,6 @@ const ProductList = () => {
                             >
                               {isDeleting ? "Deleting..." : <DeleteIcon />}
                             </button>
-
-
                           </div>
                         </td>
 
@@ -202,20 +209,24 @@ const ProductList = () => {
                               <button
                                 className="btn-remove-featured"
                                 style={{
-                                  opacity: featuredLoadingId === product._id ? 0.5 : 1,
-                                  cursor: featuredLoadingId === product._id ? "not-allowed" : "pointer",
+                                  opacity:
+                                    featuredLoadingId === product._id ? 0.5 : 1,
+                                  cursor:
+                                    featuredLoadingId === product._id
+                                      ? "not-allowed"
+                                      : "pointer",
                                 }}
-                                disabled={
-                                  featuredLoadingId === product._id
-                                }
+                                disabled={featuredLoadingId === product._id}
                                 onClick={() =>
                                   removeProductFromFeatured(product._id)
                                 }
                                 title="Remove from Featured"
                               >
-                                {featuredLoadingId === product._id
-                                  ? "Removing..."
-                                  : <EditIcon />}
+                                {featuredLoadingId === product._id ? (
+                                  "Removing..."
+                                ) : (
+                                  <EditIcon />
+                                )}
                               </button>
 
                               <CheckCircleIcon className="featured-check" />
@@ -224,15 +235,15 @@ const ProductList = () => {
                             <button
                               className="btn-add-featured"
                               style={{
-                                opacity: featuredLoadingId === product._id ? 0.5 : 1,
-                                cursor: featuredLoadingId === product._id ? "not-allowed" : "pointer",
+                                opacity:
+                                  featuredLoadingId === product._id ? 0.5 : 1,
+                                cursor:
+                                  featuredLoadingId === product._id
+                                    ? "not-allowed"
+                                    : "pointer",
                               }}
-                              disabled={
-                                featuredLoadingId === product._id
-                              }
-                              onClick={() =>
-                                addProductToFeatured(product._id)
-                              }
+                              disabled={featuredLoadingId === product._id}
+                              onClick={() => addProductToFeatured(product._id)}
                             >
                               {featuredLoadingId === product._id
                                 ? "Adding..."
