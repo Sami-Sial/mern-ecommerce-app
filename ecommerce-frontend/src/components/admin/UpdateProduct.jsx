@@ -23,7 +23,11 @@ const UpdateProduct = () => {
   const { id } = useParams();
 
   const { error, product } = useSelector((state) => state.productSlice);
-  const { isLoading, error: updateProductError, success } = useSelector(state => state.adminSlice)
+  const {
+    isLoading,
+    error: updateProductError,
+    success,
+  } = useSelector((state) => state.adminSlice);
 
   const [name, setName] = useState(product?.name);
   const [price, setPrice] = useState("");
@@ -82,10 +86,15 @@ const UpdateProduct = () => {
     if (error || updateProductError) {
       toast.error(error || updateProductError);
     }
-    if (success) {
-      toast.success("Product updated successfully");
-    }
-  }, [dispatch, id, error, product, success]);
+  
+  }, [dispatch, id, error, product]);
+
+  useEffect(() => {
+      if (success) {
+        toast.success("Product updated successfully");
+        dispatch(fetchProductDetails(id));
+      }
+  }, [success])
 
   return (
     <>
@@ -97,10 +106,7 @@ const UpdateProduct = () => {
           <SideBar />
 
           {product && (
-            <div
-
-              className="form"
-            >
+            <div className="form">
               <form
                 encType="multipart/form-data"
                 onSubmit={updateProductSubmitHandler}
@@ -205,7 +211,11 @@ const UpdateProduct = () => {
                     ))}
                 </div>
 
-                <Button type="submit" disabled={isLoading} style={{ minWidth: "80px" }}>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  style={{ minWidth: "80px" }}
+                >
                   {isLoading ? "Updating..." : "Update"}
                 </Button>
               </form>

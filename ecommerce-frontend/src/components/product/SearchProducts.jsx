@@ -79,13 +79,17 @@ const SearchProducts = () => {
 
             <div className="view-toggle">
               <button
-                className={`view-btn-toggle ${viewMode === "grid" ? "active" : ""}`}
+                className={`view-btn-toggle ${
+                  viewMode === "grid" ? "active" : ""
+                }`}
                 onClick={() => setViewMode("grid")}
               >
                 <GridViewIcon />
               </button>
               <button
-                className={`view-btn-toggle ${viewMode === "list" ? "active" : ""}`}
+                className={`view-btn-toggle ${
+                  viewMode === "list" ? "active" : ""
+                }`}
                 onClick={() => setViewMode("list")}
               >
                 <ViewListIcon />
@@ -113,24 +117,50 @@ const SearchProducts = () => {
                   key={product._id}
                   onClick={() => navigate(`/product/${product._id}`)}
                 >
-                  <img src={product.images[0]?.url} alt={product.name} />
-                  <h4>{product.name}</h4>
-                  <p>${product.price}</p>
-
-                  <div className="rating">
-                    <StarIcon sx={{ fontSize: 14 }} />
-                    {product.ratings?.toFixed(1) || "0.0"}
+                  <div className="product-image-wrapper">
+                    <img
+                      src={product.images[0]?.url}
+                      alt={product.name}
+                      className="product-image"
+                    />
                   </div>
 
-                  <Button
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/product/${product._id}`);
-                    }}
-                  >
-                    View Product
-                  </Button>
+                  <div className="product-content">
+                    <h3 className="product-title">{product.name}</h3>
+
+                    <div className="product-tags">
+                      <span className="tag tag-primary">
+                        {product.category}
+                      </span>
+                      {product.brand && (
+                        <span className="tag tag-secondary">
+                          {product.brand}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="product-footer">
+                      <p className="product-price">${product.price}</p>
+
+                      <div className="product-rating">
+                        <div className="rating-stars">
+                          <StarIcon sx={{ fontSize: 14 }} />
+                          <span>{product.ratings?.toFixed(1) || "0.0"}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      className="view-product-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/product/${product._id}`);
+                      }}
+                    >
+                      View Product
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
