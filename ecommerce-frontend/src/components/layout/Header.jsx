@@ -6,7 +6,7 @@ import UserOptions from "./UserOptions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import ecommerceLogo from "../../assets/ecommerce-logo.png";
+import ecommerceLogo from "../../assets/shop.png";
 import { Link } from "react-router-dom";
 
 import { loadUser } from "../../redux-toolkit/slices/user.slice";
