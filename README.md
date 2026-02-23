@@ -5,7 +5,7 @@ An eCommerce web application that allows users to browse products, add items to 
 ## Project Deployment
 
 - **Deployment Platform:** Vercel
-- **Link of project:**  [See Project](https://mern-ecommerce-app-frontend-nine.vercel.app)
+- **Link of project:**  [See Project](https://shopverse-hub.vercel.app/)
 
 ## 🚀 Features
 
