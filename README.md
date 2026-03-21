@@ -5,14 +5,14 @@ An eCommerce web application that allows users to browse products, add items to 
 ## Project Deployment
 
 - **Deployment Platform:** Vercel
-- **Link of project:**  [See Project](https://shopverse-hub.vercel.app/)
+- **Link of project:** [See Project](https://shopverse-hub.vercel.app/)
 
 ## 🚀 Features
 
 - User authentication (login/register)
 - Product listing with categories
 - Filtering with categories, ratings and pricing of products
-- Searching products 
+- Searching products
 - Shopping cart and checkout system
 - Payment gateway integration (Stripe)
 - Order history and tracking
@@ -21,9 +21,7 @@ An eCommerce web application that allows users to browse products, add items to 
 ## 🏗️ Tech Stack
 
 - **Frontend:** React.js / Material UI / React Bootstrap / Redux toolkit
-- **Backend:** Node.js / Express.js 
+- **Backend:** Node.js / Express.js
 - **Database:** MongoDB / Mongoose
-- **Authentication:** JWT 
+- **Authentication:** JWT
 - **Payment Gateway:** Stripe
-
-

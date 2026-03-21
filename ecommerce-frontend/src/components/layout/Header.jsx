@@ -85,15 +85,6 @@ const Header = () => {
             className={mobileMenuOpen ? "mobile-open" : ""}
           >
             <Link
-              id="home-link"
-              style={{ color: "white", textDecoration: "none" }}
-              to={"/"}
-              onClick={handleLinkClick}
-            >
-              <i className="fa-solid fa-house"></i>
-              <span>Home</span>
-            </Link>
-            <Link
               to={"/products"}
               style={{ color: "white", textDecoration: "none" }}
               onClick={handleLinkClick}
@@ -113,6 +104,41 @@ const Header = () => {
             >
               <i className="fa-solid fa-magnifying-glass"></i>
               <span>Search</span>
+            </Link>
+
+            <Link
+              style={{
+                color: "white",
+                textDecoration: "none",
+              }}
+              to="/user/cart"
+              onClick={handleLinkClick}
+            >
+              <div style={{ position: "relative", display: "inline-flex" }}>
+                <ShoppingCartIcon />
+                {cartItems.length > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      background: "linear-gradient(135deg, #ff9800, #ff5722)",
+                      color: "white",
+                      borderRadius: "50%",
+                      width: "20px",
+                      height: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "0.7rem",
+                      fontWeight: "bold",
+                      boxShadow: "0 2px 8px rgba(255, 152, 0, 0.5)",
+                    }}
+                  >
+                    {cartItems.length}
+                  </span>
+                )}
+              </div>
             </Link>
 
             {/* Cart in Mobile Menu */}
