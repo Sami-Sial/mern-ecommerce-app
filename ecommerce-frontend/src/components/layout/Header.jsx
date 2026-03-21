@@ -140,43 +140,6 @@ const Header = () => {
                 )}
               </div>
             </Link>
-
-            {/* Cart in Mobile Menu */}
-            <Link
-              style={{
-                color: "white",
-                textDecoration: "none",
-              }}
-              to="/user/cart"
-              onClick={handleLinkClick}
-              className="mobile-cart-link"
-            >
-              <div style={{ position: "relative", display: "inline-flex" }}>
-                <ShoppingCartIcon />
-                {cartItems.length > 0 && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "-8px",
-                      right: "-8px",
-                      background: "linear-gradient(135deg, #ff9800, #ff5722)",
-                      color: "white",
-                      borderRadius: "50%",
-                      width: "20px",
-                      height: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "0.7rem",
-                      fontWeight: "bold",
-                      boxShadow: "0 2px 8px rgba(255, 152, 0, 0.5)",
-                    }}
-                  >
-                    {cartItems.length}
-                  </span>
-                )}
-              </div>
-            </Link>
           </div>
 
           {/* Right Section - Cart & Auth */}
